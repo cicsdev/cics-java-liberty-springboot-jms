@@ -24,14 +24,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * This class is to write a Rest Endpoint and use the JmsTemplate class to send
+ * the JMS messages.
+ * 
+ * @RestController: build a Restful controller
+ * @Autowired: drive Dependency Injection
+ * @RequestMapping: write a Request URI method
+ */
+
 @RestController
 public class SendJMSController {
+
 	@Autowired
 	private JmsTemplate jmsTemplate;
 
-    @RequestMapping("/send")
-    public String send(@RequestParam(value="data") String data) {
-        jmsTemplate.convertAndSend("BROWNAD.REQUEST.QUEUE", data);
+	@RequestMapping("/send")
+	public String send(@RequestParam(value = "data") String data) {
+
+		jmsTemplate.convertAndSend("BROWNAD.REQUEST.QUEUE", data);
 		return data;
-    }
+
+	}
+
 }

@@ -27,25 +27,40 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ibm.cics.server.CicsException;
 import com.ibm.cics.server.TSQ;
 
+/**
+ * 
+ * This class is to receive the message and write the data to a CICS TSQ "SPRINGQ". 
+ * 
+ * @Component: denote this class as Component.
+ * @Transactional: manage transaction
+ * @JmsListener: defines the name of the Destination that this method should listen to 
+ * and the reference to the JmsListenerContainerFactory to use to create the underlying message listener container.
+ */
+
 @Component
 public class JMSMessageReceiver {
+	
 	private static final Random R = new Random(1);
 
 	@Transactional
-    @JmsListener(destination = "BROWNAD.REQUEST.QUEUE", containerFactory = "myFactory")
-    public void receiveMessage(String data) throws CicsException {
-        System.out.println("Received <" + data + ">");
-        
-        TSQ tsq = new TSQ();
-        tsq.setName("SPRINGQ");
-        tsq.writeString(data);
+	@JmsListener(destination = "BROWNAD.REQUEST.QUEUE", containerFactory = "myFactory")
+	public void receiveMessage(String data) throws CicsException {
 		
-        if(R.nextBoolean()) {
-        	System.out.println("Rolling back");
-        	throw new RuntimeException("Expected exception");
-        } else {
-        	System.out.println("Committing");
-        }
-    }
+		System.out.println("Received <" + data + ">");
+		
+        // Write the data to a CICS TSQ "SPRINGQ" by JCICS API
+		TSQ tsq = new TSQ();
+		tsq.setName("SPRINGQ");
+		tsq.writeString(data);
+
+		if (R.nextBoolean()) {
+			
+			// If set the TSQ as a recoverable resource, then it will be rollbacked if meeting exception
+			System.out.println("Rolling back");
+			throw new RuntimeException("Expected exception");
+		} else {
+			System.out.println("Committing");
+		}
+	}
 
 }
