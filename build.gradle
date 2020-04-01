@@ -30,22 +30,22 @@ repositories {
 
 dependencies {
 
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation("org.springframework.boot:spring-boot-starter-web")
 
     // Don't include TomCat in the runtime build, but do put it in WEB-INF so it can be run standalone a well as embedded
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
   
     // CICS BOM (as of 21st Nov 2019)
-    compileOnly enforcedPlatform('com.ibm.cics:com.ibm.cics.ts.bom:5.5-20191121085445-PH14856')
+    compileOnly enforcedPlatform("com.ibm.cics:com.ibm.cics.ts.bom:5.5-20191121085445-PH14856")
       
     // Don't include JCICS in the final build (no need for version because we have BOM)
     compileOnly("com.ibm.cics:com.ibm.cics.server")          
     
     // Spring Integration JMS Support    
-    compile("org.springframework.integration:spring-integration-jms")
+    implementation("org.springframework.integration:spring-integration-jms")
     
     // For JTA Bean managed transactions (this is newer and covers up to jta-1.3)
-    implementation 'javax.transaction:javax.transaction-api'
+    implementation("javax.transaction:javax.transaction-api")
     
     // For JMS API 
     compileOnly("javax.jms:javax.jms-api")      
