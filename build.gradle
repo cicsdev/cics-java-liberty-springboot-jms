@@ -9,6 +9,7 @@ id 'war'
 }
 
 group = 'com.ibm.cicsdev.springboot'
+archivesBaseName='com.ibm.cics.springboot.jms'
 version = '0.1.0'
 sourceCompatibility = '1.8'
 
