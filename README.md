@@ -67,17 +67,10 @@ This creates a WAR file inside the `target` directory.
     - concurrent-1.0
     - jms-2.0 
     - wmqJmsClient-2.0 
-    - jndi-1.0  
+    - jndi-1.0 
+    - cicsts:security-1.0 
     
-
-3. Add the app configuration to `server.xml`
-
-   Here's an example of configuration needed in `server.xml`: 
-
-    ```
-    <application id="com.ibm.cicsdev.springboot.jms-1.0.0" location="/u/myuser/spring/com.ibm.cicsdev.springboot.jms-1.0.0.war" type="war"/>
-    ```
-4. Add the JMS MQ Connection Factory configuration to `server.xml`
+3. Add the JMS MQ Connection Factory configuration to `server.xml`
   
    Here's an example of configuration needed in `server.xml`: 
 
@@ -90,7 +83,10 @@ This creates a WAR file inside the `target` directory.
     <variable name="wmqJmsClient.rar.location" value="${server.config.dir}/wmq.jmsra-9.0.4.0.rar"/>
 
     ```
-5. Notice: You also can add the SpringBoot WAR as a WAR bundlepart and deploy with a CICS bundle. If you choose this way, you can omit the above 1. and 3. And about the MQ resource adapter(wmq.jmsra-9.0.4.0.rar in this sample), you can refer to the official download on FixCentral https://www.ibm.com/support/pages/node/489235
+
+4. Copy and paste WAR from build project into a CICS bundle project and create WARbundlepart. Deploy the Spring Boot application by this CICS bundle. 
+
+5. Notice: About the MQ resource adapter(wmq.jmsra-9.0.4.0.rar in this sample), you can refer to the official download on FixCentral https://www.ibm.com/support/pages/node/489235
 
 
 ## Trying out the sample
@@ -98,6 +94,7 @@ This creates a WAR file inside the `target` directory.
 1. Find the URL for the application in messages.log e.g. `http://myzos.mycompany.com:httpPort/com.ibm.cicsdev.springboot.jms-1.0.0`. 
 
 2. From the browser you can visit the URL:`http://myzos.mycompany.com:httpPort/com.ibm.cicsdev.springboot.jms-1.0.0/send?data=I LOVE CICS`.
+Then you will find the browser prompts for a basic authentication, please type your userid and password.  
 
 3. Check if the specified TSQ has the information you expected by executing the CICS command "CEBR SPRINGQ". For this example, you should just see one `I LOVE CICS` in TSQ SPRINGQ. The other one is roll backed because of meeting exceptions when receiving messages.
     
