@@ -70,7 +70,7 @@ This creates a WAR file inside the `target` directory.
     - jndi-1.0 
     - cicsts:security-1.0 
   
-Notes: With servlet-3.1 and WAR file Tomcat must be exluded, for JAR file it doesn't matter, and for servlet-4.0 it doesn't matter.
+   Notes: With servlet-3.1 and WAR file Tomcat must be exluded, for JAR file it doesn't matter, and for servlet-4.0 it doesn't matter.
    
 3. Add the JMS MQ Connection Factory configuration to `server.xml`
   
@@ -88,7 +88,7 @@ Notes: With servlet-3.1 and WAR file Tomcat must be exluded, for JAR file it doe
 
 4. Copy and paste WAR from build project into a CICS bundle project and create WARbundlepart. Deploy the Spring Boot application by this CICS bundle. 
 
-Notes: You also can add the application configuration to `server.xml`
+   Notes: You also can add the application configuration to `server.xml`
   
    Here's an example of configuration needed in `server.xml`: 
 
@@ -100,7 +100,7 @@ Notes: You also can add the application configuration to `server.xml`
             </security-role>
        </application-bnd>
    </application>
-    ``` 
+   ``` 
 
 5. Notice: About the MQ resource adapter(wmq.jmsra-9.0.4.0.rar in this sample), you can refer to the official download on FixCentral https://www.ibm.com/support/pages/node/489235
 
