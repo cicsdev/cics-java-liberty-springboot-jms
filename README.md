@@ -91,9 +91,9 @@ This creates a WAR file inside the `target` directory.
 
 ## Trying out the sample
 
-1. Find the URL for the application in messages.log e.g. `http://myzos.mycompany.com:httpPort/com.ibm.cicsdev.springboot.jms-1.0.0`. 
+1. Find the URL for the application in messages.log e.g. `http://myzos.mycompany.com:httpPort/com.ibm.cicsdev.springboot.jms-0.1.0`. 
 
-2. From the browser you can visit the URL:`http://myzos.mycompany.com:httpPort/com.ibm.cicsdev.springboot.jms-1.0.0/send?data=I LOVE CICS`.
+2. From the browser you can visit the URL:`http://myzos.mycompany.com:httpPort/com.ibm.cicsdev.springboot.jms-0.1.0/send?data=I LOVE CICS`.
 Then you will find the browser prompts for a basic authentication, please type your userid and password.  
 
 3. Check if the specified TSQ has the information you expected by executing the CICS command "CEBR SPRINGQ". For this example, you should just see one `I LOVE CICS` in TSQ SPRINGQ. The other one is roll backed because of meeting exceptions when receiving messages.
