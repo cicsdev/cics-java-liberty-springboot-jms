@@ -2,8 +2,6 @@
 
 This sample project demonstrates a Spring Boot JMS application integrated with IBM CICS that can be deployed to a CICS Liberty JVM server. In this application, IBM MQ as the message broker which helps to send and receive messages between Spring Boot and CICS, and writes the messages into a CICS recoverable Temporary storage queue(TSQ). The jmsListener receives messages and writing CICS TSQ are under one transaction management. Both commit or both roll back if fails.
 
-For more information, see blog post - link TBC.
-
 ## Prerequisites
 
   - CICS TS V5.3 or later
@@ -76,10 +74,11 @@ This creates a WAR file inside the `target` directory.
   
    Here's an example of configuration needed in `server.xml`: 
 
-    ```
+    ``` XML
     <!-- JMS MQ Connection Factory -->
     <jmsConnectionFactory id="jms/cf" jndiName="jms/cf">
-        <properties.wmqJms channel="yourChannel" hostname="yourHost" port="yourPort" queueManager="yourQueueManager" transportType="CLIENT"/>
+        <properties.wmqJms channel="yourChannel" hostname="yourHost" port="yourPort" 
+        queueManager="yourQueueManager" transportType="CLIENT"/>
         <connectionManager maxPoolSize="10" minPoolSize="0"/>
     </jmsConnectionFactory>
     <variable name="wmqJmsClient.rar.location" value="${server.config.dir}/wmq.jmsra-9.0.4.0.rar"/>
