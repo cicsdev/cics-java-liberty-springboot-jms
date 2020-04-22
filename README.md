@@ -91,31 +91,30 @@ This creates a WAR file inside the `target` directory.
 
 5. Optionally, manually upload the WAR file to zFS and add an `<application>` configuration to server.xml:
 
-    ``` XML
-    <application id="com.ibm.cicsdev.springboot.jms-0.1.0" 
-     location="${server.config.dir}/springapps/com.ibm.cicsdev.springboot.jms-0.1.0.war" 
+``` XML
+   <application id="com.ibm.cicsdev.springboot.jms-0.1.0"  
+     location="${server.config.dir}/springapps/com.ibm.cicsdev.springboot.jms-0.1.0.war"  
      name="com.ibm.cicsdev.springboot.jms-0.1.0" type="war">
-        <application-bnd>
-            <security-role name="cicsAllAuthenticated">
-                <special-subject type="ALL_AUTHENTICATED_USERS"/>
-            </security-role>
-       </application-bnd>
+     <application-bnd>
+        <security-role name="cicsAllAuthenticated">
+            <special-subject type="ALL_AUTHENTICATED_USERS"/>
+        </security-role>
+     </application-bnd>  
    </application>
-``` 
-
-
-6. About the MQ resource adapter(wmq.jmsra-9.0.4.0.rar in this sample), you can refer to the official download on FixCentral https://www.ibm.com/support/pages/node/489235
-
+```
 
 ## Trying out the sample
 
-1. Find the base URL for the application in the Liberty messages.log e.g. `http://myzos.mycompany.com:httpPort/com.ibm.cicsdev.springboot.jms-0.1.0`. 
+1. Find the base URL for the application in the Liberty messages.log e.g.  `http://myzos.mycompany.com:httpPort/com.ibm.cicsdev.springboot.jms-0.1.0`.
 
-2. Past the base URL along with the REST service suffix 'send?data=I LOVE CICS' into the browser  e.g. `http://myzos.mycompany.com:httpPort/com.ibm.cicsdev.springboot.jms-0.1.0/send?data=I LOVE CICS`.
-Then you will find the browser prompts for a basic authentication, please type your userid and password.  
+2. Past the base URL along with the REST service suffix 'send?data=I LOVE CICS' into the browser  e.g.  `http://myzos.mycompany.com:httpPort/com.ibm.cicsdev.springboot.jms-0.1.0/send?data=I LOVE CICS`.  
+The browser will prompt for basic authentication. Enter a valid userid and password - according to the configured registry for your target Liberty JVM server.
 
 3. Check if the specified TSQ has the information you expected by executing the CICS command "CEBR SPRINGQ". For this example, you should just see one `I LOVE CICS` in TSQ SPRINGQ. The other one is roll backed because of meeting exceptions when receiving messages.
+
     
 ## License
 This project is licensed under [Apache License Version 2.0](LICENSE). 
+     
+
      
