@@ -103,6 +103,7 @@ This creates a WAR file inside the `target` directory.
    </application>
 ``` 
 
+
 6. About the MQ resource adapter(wmq.jmsra-9.0.4.0.rar in this sample), you can refer to the official download on FixCentral https://www.ibm.com/support/pages/node/489235
 
 
