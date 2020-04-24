@@ -70,7 +70,9 @@ This creates a WAR file inside the `target` directory.
     - *wmqJmsClient-2.0* 
     - *jndi-1.0*
     - *cicsts:security-1.0* 
+   
    Note: `servlet-4.0` will only work for CICS TS V5.5 or later
+   
 2. Add the JMS MQ Connection Factory configuration to `server.xml`
   
    Here's an example of configuration needed in `server.xml`: 
