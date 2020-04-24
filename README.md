@@ -22,8 +22,6 @@ You can also build the sample project through plug-in tooling of your chosen IDE
 
 **Note:** If you import the project to an IDE of your choice, you might experience local project compile errors. To resolve these errors you should refresh your IDEs configuration. For example, in Eclipse: for Gradle, right-click on "Project", select "Gradle -> Refresh Gradle Project", or for Maven, right-click on "Project", select "Maven -> Update Project...".
 
-**Note:** About the MQ resource adapter(wmq.jmsra-9.0.4.0.rar in this sample), you can refer to the official download on FixCentral https://www.ibm.com/support/pages/node/489235
-
 
 ### Gradle
 
@@ -72,7 +70,7 @@ This creates a WAR file inside the `target` directory.
     - *wmqJmsClient-2.0* 
     - *jndi-1.0*
     - *cicsts:security-1.0* 
-   
+   Note: `servlet-4.0` will only work for CICS TS V5.5 or later
 2. Add the JMS MQ Connection Factory configuration to `server.xml`
   
    Here's an example of configuration needed in `server.xml`: 
