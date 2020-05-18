@@ -2,88 +2,87 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 	
-	<!-- Inherit defaults from Spring Boot -->
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.5.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
+  <!-- Inherit defaults from Spring Boot Parent -->
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.2.5.RELEASE</version>
+    <relativePath/>
+  </parent>
 	
-	<groupId>com.ibm.cicsdev</groupId>
-	<artifactId>com.ibm.cicsdev.springboot.jms</artifactId>
-	<version>0.1.0</version>
-	 <!-- The project produces a war file rather than a jar file -->
-	<packaging>war</packaging>
-	<name>com.ibm.cicsdev.springboot.jms</name>
-	<description>Demo project for Spring Boot</description>
-
-	<properties>
-		<java.version>1.8</java.version>
-	</properties>
-
-  
-  <!-- Package as an executable war(default jar) -->
-  <build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-  </build>  
- 
- <!-- CICS BOM (as of 21st Nov 2019) -->
+  <!-- Application properties -->
+  <groupId>com.ibm.cicsdev</groupId>
+  <artifactId>com.ibm.cicsdev.springboot.jms</artifactId>
+  <version>0.1.0</version>
+  <name>com.ibm.cicsdev.springboot.jms</name>
+  <description>Demo project for Spring Boot</description>
+  <properties>
+    <java.version>1.8</java.version>
+  </properties>
+   
+  <!-- CICS BOM (as of 21st Nov 2019) -->
   <dependencyManagement>
-      <dependencies>
-        <dependency>
-          <groupId>com.ibm.cics</groupId>
-          <artifactId>com.ibm.cics.ts.bom</artifactId>
-          <version>5.5-20191121085445-PH14856</version>
-          <type>pom</type>
-          <scope>import</scope>
-         </dependency>
-      </dependencies>
-   </dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.ibm.cics</groupId>
+        <artifactId>com.ibm.cics.ts.bom</artifactId>
+        <version>5.5-20191121085445-PH14856</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
-<dependencies>
- <!-- Don't include JCICS in the final build (no need for version because we have BOM)  -->
-   <dependency>
-     <groupId>com.ibm.cics</groupId>
-     <artifactId>com.ibm.cics.server</artifactId>
-   </dependency>
+  <dependencies>
+    <!-- Don't include JCICS in the final build (no need for version because we have BOM)  -->
+    <dependency>
+      <groupId>com.ibm.cics</groupId>
+      <artifactId>com.ibm.cics.server</artifactId>
+    </dependency>
    
-<!-- Spring web support -->   
-   <dependency>
-     <groupId>org.springframework.boot</groupId>
-     <artifactId>spring-boot-starter-web</artifactId>
-   </dependency> 
+    <!-- Spring Boot web support -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
 
-<!-- Spring Integration JMS Support  -->
-   <dependency>
-            <groupId>org.springframework.integration</groupId>
-            <artifactId>spring-integration-jms</artifactId>
-   </dependency>
+    <!-- Spring Integration JMS Support  -->
+    <dependency>
+      <groupId>org.springframework.integration</groupId>
+      <artifactId>spring-integration-jms</artifactId>
+    </dependency>
    
-<!--  For JMS API -->
-   <dependency>
-          <groupId>javax.jms</groupId>
-          <artifactId>javax.jms-api</artifactId>
-          <scope>provided</scope>
-   </dependency>
+    <!--  For JMS API (provided) -->
+    <dependency>
+      <groupId>javax.jms</groupId>
+      <artifactId>javax.jms-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
    
-<!-- For Bean managed transactions -->
-   <dependency>
-          <groupId>javax.transaction</groupId>
-          <artifactId>javax.transaction-api</artifactId>
-          <scope>provided</scope>
-   </dependency>
+    <!-- For Bean managed transactions (provided) -->
+    <dependency>
+      <groupId>javax.transaction</groupId>
+      <artifactId>javax.transaction-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
    
-<!-- Don't include TomCat in the runtime build --> 
-   <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
-		</dependency>
+    <!-- Don't include TomCat in the runtime build --> 
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-tomcat</artifactId>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
+    
+  <!-- Package as an executable war (default jar) -->
+  <packaging>war</packaging>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+  
 </project>
