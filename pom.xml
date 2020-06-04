@@ -11,7 +11,7 @@
 	
   <!-- Application properties -->
   <groupId>com.ibm.cicsdev</groupId>
-  <artifactId>com.ibm.cicsdev.springboot.jms</artifactId>
+  <artifactId>cics-java-liberty-springboot-jms</artifactId>
   <version>0.1.0</version>
   <name>com.ibm.cicsdev.springboot.jms</name>
   <description>Demo project for Spring Boot</description>
