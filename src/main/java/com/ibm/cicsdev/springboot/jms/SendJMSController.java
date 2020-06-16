@@ -39,6 +39,10 @@ public class SendJMSController {
 	@Autowired
 	private JmsTemplate jmsTemplate;
 
+	/**
+	 * @param data, the object received from a Rest Endpoint
+	 * @return, the JMS message that needs to be send to the MQ destination
+	 */
 	@RequestMapping("/send")
 	public String send(@RequestParam(value = "data") String data) {
 

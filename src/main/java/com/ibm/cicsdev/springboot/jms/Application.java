@@ -62,6 +62,9 @@ public class Application {
 		
 	}
 
+	/**
+	 * @return, the connection factory from Liberty
+	 */
 	@Bean
 	public ConnectionFactory connectionFactory() {
 		
@@ -75,6 +78,10 @@ public class Application {
 		}
 	}
 
+	/**
+	 * @param connectionFactory, the connection factory from Liberty
+	 * @return a jms listener container
+	 */
 	@Bean
 	public JmsListenerContainerFactory<?> myFactory(ConnectionFactory connectionFactory) {
 		
@@ -85,6 +92,10 @@ public class Application {
 		return factory;
 	}
 
+	/**
+	 * @param connectionFactory, the connection factory from Liberty
+	 * @return a JtaTransactionManager to manage the transaction
+	 */
 	@Bean
 	public PlatformTransactionManager platformTransactionManager(ConnectionFactory connectionFactory) {
 
@@ -97,6 +108,10 @@ public class Application {
 		}
 	}
 
+	/**
+	 * @return a DefaultManagedTaskExecutor to help to use threads from the Liberty 
+	 * executor(which are CICS enabled by default)
+	 */
 	@Bean
 	public TaskExecutor taskExecutor() {
 		

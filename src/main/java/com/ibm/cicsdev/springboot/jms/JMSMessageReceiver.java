@@ -42,6 +42,10 @@ public class JMSMessageReceiver {
 	
 	private static final Random R = new Random(1);
 
+	/**
+	 * @param data, the message received from the MQ destination
+	 * @throws CicsException
+	 */
 	@Transactional
 	@JmsListener(destination = "BROWNAD.REQUEST.QUEUE", containerFactory = "myFactory")
 	public void receiveMessage(String data) throws CicsException {
