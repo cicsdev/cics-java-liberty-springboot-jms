@@ -65,7 +65,7 @@
       <scope>provided</scope>
     </dependency>
    
-    <!-- Compile against, but don't include TomCat in the runtime build --> 
+    <!-- Don't include TomCat in the runtime build, but do put it in WEB-INF so it can be run standalone a well as embedded --> 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-tomcat</artifactId>

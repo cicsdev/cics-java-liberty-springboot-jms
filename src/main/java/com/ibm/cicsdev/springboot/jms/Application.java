@@ -1,20 +1,12 @@
-/*
- * Copyright 2012-2019 the original author or authors.
- *
- * Copyright IBM Corp. 2019 All Rights Reserved   
- *  
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/* Licensed Materials - Property of IBM                                   */
+/*                                                                        */
+/* SAMPLE                                                                 */
+/*                                                                        */
+/* (c) Copyright IBM Corp. 2020 All Rights Reserved                       */
+/*                                                                        */
+/* US Government Users Restricted Rights - Use, duplication or disclosure */
+/* restricted by GSA ADP Schedule Contract with IBM Corp                  */
+/*                                                                        */
 
 package com.ibm.cicsdev.springboot.jms;
 
@@ -46,45 +38,49 @@ import org.springframework.transaction.jta.JtaTransactionManager;
  *   @Configuration: allow to register extra beans in the context or import additional configuration classes
  * 
  * @EnableJms: enable JMS listener annotated endpoints.
- * @EnableTransactionManagement: manage transaction
+ * @EnableTransactionManagement: manage transactions
  */
-
 @SpringBootApplication
 @EnableJms
 @EnableTransactionManagement
-public class Application {
-
+public class Application 
+{
 	private static final String CONNECTION_FACTORY = "jms/cf";
 
-	public static void main(String[] args) {
-		
-		SpringApplication.run(Application.class, args);
-		
+	
+	public static void main(String[] args) 
+	{	
+		SpringApplication.run(Application.class, args);	
 	}
 
+	
 	/**
 	 * @return, the connection factory from Liberty
 	 */
 	@Bean
-	public ConnectionFactory connectionFactory() {
-		
-		try {
-			// Look up the connection factory from Liberty
-			ConnectionFactory fact = InitialContext.doLookup(CONNECTION_FACTORY);
-			return fact;
-		} catch (NamingException e) {
+	public ConnectionFactory connectionFactory() 
+	{	
+		try 
+		{
+			// Look up the connection factory from Liberty (server.xml) using JNDI
+			ConnectionFactory factory = InitialContext.doLookup(CONNECTION_FACTORY);
+			return factory;
+		} 
+		catch (NamingException e) 
+		{
 			e.printStackTrace();
 			return null;
 		}
 	}
+	
 
 	/**
 	 * @param connectionFactory, the connection factory from Liberty
-	 * @return a jms listener container
+	 * @return a JMS listener container from the factory
 	 */
 	@Bean
-	public JmsListenerContainerFactory<?> myFactory(ConnectionFactory connectionFactory) {
-		
+	public JmsListenerContainerFactory<?> myFactory(ConnectionFactory connectionFactory) 
+	{	
 		DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
 		factory.setConnectionFactory(connectionFactory);
 		factory.setTaskExecutor(taskExecutor());
@@ -92,29 +88,35 @@ public class Application {
 		return factory;
 	}
 
+	
 	/**
 	 * @param connectionFactory, the connection factory from Liberty
 	 * @return a JtaTransactionManager to manage the transaction
 	 */
 	@Bean
-	public PlatformTransactionManager platformTransactionManager(ConnectionFactory connectionFactory) {
-
-		try {
+	public PlatformTransactionManager platformTransactionManager(ConnectionFactory connectionFactory) 
+	{
+		try 
+		{
+			// Use JNDI to lookup Liberty's transaction context, and return a transaction manager from it
 			UserTransaction tx = InitialContext.doLookup("java:comp/UserTransaction");
 			return new JtaTransactionManager(tx);
-		} catch (NamingException e) {
+		} 
+		catch (NamingException e) 
+		{
 			e.printStackTrace();
 			return null;
 		}
 	}
 
+	
 	/**
-	 * @return a DefaultManagedTaskExecutor to help to use threads from the Liberty 
-	 * executor(which are CICS enabled by default)
+	 * @return the DefaultManagedTaskExecutor, ensures we supply Liberty
+	 * executor threads to Spring (which are CICS enabled by default)
 	 */
 	@Bean
-	public TaskExecutor taskExecutor() {
-		
+	public TaskExecutor taskExecutor() 
+	{	
 		return new DefaultManagedTaskExecutor();
 	}
 
