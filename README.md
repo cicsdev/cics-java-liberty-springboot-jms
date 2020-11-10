@@ -1,6 +1,8 @@
 # cics-java-liberty-springboot-jms
 
-This sample project demonstrates a Spring Boot JMS application integrated with IBM CICS that can be deployed to a CICS Liberty JVM server. In this application, IBM MQ as the message broker which helps to send and receive messages between Spring Boot and CICS, and writes the messages into a CICS recoverable Temporary storage queue(TSQ). The jmsListener receives messages and writing CICS TSQ are under one transaction management. Both commit or both roll back if fails.
+This sample project demonstrates how to use the Spring Boot JMS template to integrate with CICS and use IBM MQ as the message broker. The sample is intended for deployment to a CICS Liberty JVM server. 
+
+Invoking the REST end-point of the application will write a message with the data you provide to MQ. A jmsListener receives the message from MQ and writes it to a CICS Temporary storage queue(TSQ). Reading from the queue and writing to the CICS TSQ are performed within the same transaction using JTA and the Spring Boot @Transactional annotation to ensure everything commits or rolls back as one.
 
 ## Prerequisites
 
@@ -129,9 +131,14 @@ This creates a WAR file inside the `target` directory.
         queueManager="yourQueueManager" transportType="CLIENT"/>
         <connectionManager maxPoolSize="10" minPoolSize="0"/>
     </jmsConnectionFactory>
-    <variable name="wmqJmsClient.rar.location" value="${server.config.dir}/wmq.jmsra-9.0.4.0.rar"/>
+    <variable name="wmqJmsClient.rar.location" value="/wmq.jmsra-9.0.4.0.rar"/>
 
     ```
+
+The value of 10 on maxPoolSize is used as an example only. Set maxPoolSize to the maximum number of concurrent users of the connection factory.
+
+Liberty does not ship with the MQ resource adapater, so you must specify the location in zFS of the IBM MQ resource adapter with a variable element. On the value attribute, specify the path to the IBM MQ resource adapter file, wmq.jmsra.rar.
+ 
 
 - Deployment option 1:
     - Copy and paste the built WAR from your *target* or *build/libs* directory into a Eclipse CICS bundle project and create a new WAR bundlepart that references the WAR file. Then deploy the CICS bundle project from CICS Explorer using the **Export Bundle Project to z/OS UNIX File System** wizard.

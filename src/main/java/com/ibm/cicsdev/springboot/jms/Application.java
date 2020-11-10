@@ -63,7 +63,7 @@ public class Application
 		try 
 		{
 			// Look up the connection factory from Liberty (server.xml) using JNDI
-			ConnectionFactory factory = InitialContext.doLookup(CONNECTION_FACTORY);
+			ConnectionFactory factory = InitialContext.doLookup(CONNECTION_FACTORY);					
 			return factory;
 		} 
 		catch (NamingException e) 
@@ -79,7 +79,7 @@ public class Application
 	 * @return a JMS listener container from the factory
 	 */
 	@Bean
-	public JmsListenerContainerFactory<?> myFactory(ConnectionFactory connectionFactory) 
+	public JmsListenerContainerFactory<?> myFactoryBean(ConnectionFactory connectionFactory) 
 	{	
 		DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
 		factory.setConnectionFactory(connectionFactory);

@@ -46,7 +46,7 @@ public class SendJMSController
 	@RequestMapping("/send")
 	public String send(@RequestParam(value = "data") String data) 
 	{
-		jmsTemplate.convertAndSend("BROWNAD.REQUEST.QUEUE", data);
+		jmsTemplate.convertAndSend("SPRING.QUEUE", data);
 		return data;
 	}
 

@@ -39,7 +39,7 @@ public class JMSMessageReceiver
 	 * @throws CicsException
 	 */
 	@Transactional
-	@JmsListener(destination = "BROWNAD.REQUEST.QUEUE", containerFactory = "myFactory")
+	@JmsListener(destination = "SPRING.QUEUE", containerFactory = "myFactoryBean")
 	public void receiveMessage(String data) throws CicsException 
 	{	
 		System.out.println("Received <" + data + ">");
