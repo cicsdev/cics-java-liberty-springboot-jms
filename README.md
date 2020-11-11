@@ -53,6 +53,10 @@ Maven (POM.xml):
 
   
 
+## Updating
+
+The JMSMessageReceiver.java and the SendJVMController.java classes both assume an MQ destination of SPRING.QUEUE. If that value does not meet your enterprise naming standards, please ensure you modify both occurrences consistently.
+
 ## Building 
 
 You can build the sample using an IDE of your choice, or you can build it from the command line. For both approaches, using the supplied Gradle or Maven wrapper is the recommended way to get a consistent version of build tooling. 
