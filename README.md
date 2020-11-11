@@ -2,7 +2,7 @@
 
 This sample project demonstrates how to use the Spring Boot JMS template to integrate with CICS and use IBM MQ as the message broker. The sample is intended for deployment to a CICS Liberty JVM server. 
 
-Invoking the REST end-point of the application will write a message with the data you provide to MQ. A jmsListener receives the message from MQ and writes it to a CICS Temporary storage queue(TSQ). Reading from the queue and writing to the CICS TSQ are performed within the same transaction using JTA and the Spring Boot @Transactional annotation to ensure everything commits or rolls back as one.
+Invoking the REST end-point of the application will write a message with the data you provide to MQ. A jmsListener receives the message from MQ and writes it to a CICS Temporary storage queue(TSQ). Reading from the queue and writing to the CICS TSQ are performed within the same transaction using JTA and the Spring Boot @Transactional annotation, to ensure everything commits or rolls back as one.
 
 ## Prerequisites
 
@@ -122,7 +122,7 @@ This creates a WAR file inside the `target` directory.
    
 - Add the JMS MQ Connection Factory configuration to `server.xml`
   
-   Here's an example of configuration needed in `server.xml`: 
+   Here's an example of configuration needed in `server.xml`. Substitute the *channel*, *hostname*, *port* and *queueManager* values to your installation values, and fill in the MQ rar location value with the location on zFS to which you downloaded the rar: 
 
     ``` XML
     <!-- JMS MQ Connection Factory -->
@@ -136,8 +136,6 @@ This creates a WAR file inside the `target` directory.
     ```
 
 The value of 10 on maxPoolSize is used as an example only. Set maxPoolSize to the maximum number of concurrent users of the connection factory.
-
-Liberty does not ship with the MQ resource adapater, so you must specify the location in zFS of the IBM MQ resource adapter with a variable element. On the value attribute, specify the path to the IBM MQ resource adapter file, wmq.jmsra.rar.
  
 
 - Deployment option 1:
@@ -173,7 +171,7 @@ Liberty does not ship with the MQ resource adapater, so you must specify the loc
 
     
 ## License
-This project is licensed under [Apache License Version 2.0](LICENSE). 
+This project is licensed under [Eclipse Public License - v 2.0](LICENSE). 
      
 
      
