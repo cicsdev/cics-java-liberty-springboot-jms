@@ -137,17 +137,17 @@ The value of 10 on maxPoolSize is used as an example only. Set maxPoolSize to th
 - Deployment option 2:
     - Manually upload the WAR file to zFS and add an `<application>` element to the Liberty server.xml to define the web application with access to all authenticated users. For example the following application element can be used to install a WAR, and grant access to all authenticated users if security is enabled.
 
-``` XML
-<application id="cics-java-liberty-springboot-jms-0.1.0"
-    location="${server.config.dir}/springapps/cics-java-liberty-springboot-jms-0.1.0.war"
-    name="cics-java-liberty-springboot-jms-0.1.0" type="war">
-    <application-bnd>
-        <security-role name="cicsAllAuthenticated">
-            <special-subject type="ALL_AUTHENTICATED_USERS"/>
-        </security-role>
-    </application-bnd>
-</application>
-```
+    ``` XML
+    <application id="cics-java-liberty-springboot-jms-0.1.0"
+        location="${server.config.dir}/springapps/cics-java-liberty-springboot-jms-0.1.0.war"
+        name="cics-java-liberty-springboot-jms-0.1.0" type="war">
+        <application-bnd>
+            <security-role name="cicsAllAuthenticated">
+                <special-subject type="ALL_AUTHENTICATED_USERS"/>
+            </security-role>
+        </application-bnd>
+    </application>
+    ```
 
 ## Trying out the sample
 
