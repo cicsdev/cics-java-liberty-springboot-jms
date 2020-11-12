@@ -36,15 +36,15 @@ Maven (POM.xml):
 
 ``` xml	
 <dependencyManagement>
-    <dependencies>
-        <dependency>
-            <groupId>com.ibm.cics</groupId>
-            <artifactId>com.ibm.cics.ts.bom</artifactId>
-            <version>5.5-20200519131930-PH25409</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
-    </dependencies>
+  <dependencies>
+    <dependency>
+      <groupId>com.ibm.cics</groupId>
+      <artifactId>com.ibm.cics.ts.bom</artifactId>
+      <version>5.5-20200519131930-PH25409</version>
+      <type>pom</type>
+      <scope>import</scope>
+    </dependency>
+  </dependencies>
 </dependencyManagement>
 ```
 
