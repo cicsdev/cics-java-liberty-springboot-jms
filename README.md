@@ -2,7 +2,7 @@
 
 This sample project demonstrates how to use the Spring Boot JMS template to integrate with CICS and use IBM MQ as the message broker. The sample is intended for deployment to a CICS Liberty JVM server. 
 
-Invoking the REST end-point of the application will write a message with the data you provide to MQ. A jmsListener receives the message from MQ and writes it to a CICS Temporary storage queue(TSQ). Reading from the queue and writing to the CICS TSQ are performed within the same transaction using JTA and the Spring Boot @Transactional annotation, to ensure everything commits or rolls back as one.
+Invoking the REST end-point of the application will write a message with the data you provide to MQ. A JMS listener endpoint receives the message from MQ and writes it to a CICS Temporary storage queue (TSQ). Reading from the queue and writing to the CICS TSQ are performed within the same transaction using JTA and the Spring Boot `@Transactional` annotation, to ensure everything commits or rolls back as one.
 
 ## Prerequisites
 
@@ -26,7 +26,7 @@ Invoking the REST end-point of the application will write a message with the dat
  
 Before building this sample, you should verify that the correct CICS TS bill of materials (BOM) is specified for your target release of CICS. The BOM specifies a consistent set of artifacts, and adds information about their scope. In the example below the version specified is compatible with CICS TS V5.5 with JCICS APAR PH25409, or newer. That is, the Java byte codes built by compiling against this version of JCICS will be compatible with later CICS TS versions and subsequent JCICS APARs. 
 
-You can browse the published versions of the CICS BOM at [Maven Central.](https://mvnrepository.com/artifact/com.ibm.cics/com.ibm.cics.ts.bom)
+You can browse the published versions of the CICS BOM at [Maven Central](https://mvnrepository.com/artifact/com.ibm.cics/com.ibm.cics.ts.bom).
  
 Gradle (build.gradle): 
 
@@ -50,7 +50,7 @@ Maven (POM.xml):
 
 ## Updating
 
-The JMSMessageReceiver.java and the SendJVMController.java classes both assume an MQ destination of SPRING.QUEUE. If that value does not meet your enterprise naming standards, please ensure you modify both occurrences consistently.
+The JMSMessageReceiver.java and the SendJVMController.java classes both assume an MQ destination of `SPRING.QUEUE`. If that value does not meet your enterprise naming standards, please ensure you modify both occurrences consistently.
 
 ## Building 
 
