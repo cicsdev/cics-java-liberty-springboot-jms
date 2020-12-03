@@ -46,7 +46,7 @@ dependencies
     // Spring Integration JMS Support    
     implementation("org.springframework.integration:spring-integration-jms")
     
-    // For JTA Bean managed transactions (this is newer and covers up to jta-1.3)
+    // For JTA transaction management 
     implementation("javax.transaction:javax.transaction-api")
     
     // For JMS API 
