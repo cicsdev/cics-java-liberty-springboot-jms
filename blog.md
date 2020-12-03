@@ -1,352 +1,230 @@
 
-# Spring Boot application with JMS
+# Spring Boot Java applications for CICS, Part 5: JMS
 
 ## Introduction 
 
-Spring Boot provides extensive support for integrating with messaging systems, from simplified use of the JMS API using JmsTemplate to a *message driven POJO* (MDP) to handle incoming asynchronous message using the @JmsListener annotation. Follow the steps in this article to set up a Spring Boot JMS application integrated with CICS, build it with Maven or Gradle, and finally deploy and test it in a CICS Liberty JVM server.
-
-Java Message Service (JMS) is an API defined by the Java Enterprise Edition (Java EE) specification that allows applications to send and receive messages using reliable, asynchronous communication. It provides the ability to use a range of messaging providers including IBM MQ, the WebSphere Liberty\-embedded JMS messaging provider or a third party messaging provider. IBM MQ classes for JMS implement the interfaces that are defined in the javax.jms package, and also provides two sets of extensions to the JMS API.
-
-The Spring Boot provides extensive support for integrating with messaging systems, from simplified use of the JMS API using JmsTemplate to a complete infrastructure to receive messages asynchronously. We can conveniently send or receive messages to queue or topic by  Spring JmsTemplate.
-
-Liberty supports asynchronous messaging as a method of communication that is based on the Java™ Message Service (JMS) programming interface. The JMS interface provides a common way for Java programs (clients and Java EE applications) to create, send, receive, and read asynchronous requests as JMS messages. With Liberty, you can configure multiple JMS messaging providers, which can be used by the JMS applications.
-
-Here we choose IBM MQ as the messaging providers. The IBM MQ classes for JMS can be used in:
-
-- An OSGi JVM server, with restrictions.
-- A CICS standard\-mode Liberty JVM server when the JMS application connects to a queue manager, using either bindings mode or client mode transport.
-- A CICS integrated\-mode Liberty JVM server when the JMS application connects to a queue manager, using client mode transport. In this article, we choose this way to set up Spring Boot JMS integration with CICS.
-
-Your Java application communicates with IBM MQ in one of two ways:
-
-- Through message\-driven beans (MDBs)
-- Through a servlet that uses a JMS connection factory. In this article, we choose this method to set up Spring Boot JMS integration with CICS.
-
-Follow the steps in this article to set up a Spring Boot JMS application integrated with CICS, build it with Maven or Gradle, and finally deploy and test it in a CICS Liberty JVM server.
+Spring Boot provides extensive support for integrating with messaging systems, from simplified use of the JMS API using JmsTemplate to a *message driven POJO* (MDP) to handle 
+incoming asynchronous message using the `@JmsListener` annotation. 
+This tutorial, the fifth in the “Spring Boot Java applications for CICS” series, demonstrates how to set up a Spring Boot JMS application integrated with CICS, build it with Maven or Gradle, 
+and finally deploy and test it in a CICS Liberty JVM server using a IBM MQ series as the JMS provider. 
 
 The application source and build scripts are available in at  cics\-java\-liberty\-springboot\-jms.
 
 
-## Setting up Spring Boot JMS integration with CICS
+## Learning Objectives
 
-This section includes 4 parts as below:
+This tutorial will show you how to:
+1.  Create and build a Spring Boot application that uses JMS
+2. 
+3. 
+4.  Test the sample in CICS
 
-- Part 1: Create the Spring Boot application**
-- Part 2: Detailed introduction of the application**
-- Part 3: Deploy the WAR to a CICS Liberty JVM server**
-- Part 4: Test this Spring Boot application**
+This is a web application and all requests can be made from a browser. The application uses the Spring Boot web interface to process GET REST requests. 
+In a real-world implementation, other types of REST interfaces, such as POST, would be more appropriate. GET requests are used here for simplicity.
+
+The application source and build scripts are available in the cicsdev/cics-java-liberty-springboot-jms repository.
+
+## Prerequisites
+    1. CICS TS V5.3 or later
+    1. A configured Liberty JVM server in CICS
+    1. IBM MQ V8.0 or later on z/OS
+    1. Java SE 1.8 on the z/OS system
+    1. Java SE 1.8 on the workstation
+    1. An Eclipse development environment on the workstation (optional)
+    1. Either Gradle or Apache Maven on the workstation (optional if using Wrappers)
+
+
+## Estimated time
+
+It should take you about 2 hours to complete this tutorial.
+
+## Steps
+
+### 1 Create the application
+
+
+You can develop the code by following this tutorial step-by-step, or by downloading the [cics-java-liberty-springboot-jms]() example in GitHub.
+
+If you are following along step-by-step, generate and download a Spring Boot web application using the Spring initializr website tool. 
+For further details on how to do this, refer to part 1 of this tutorial series, (Spring Boot Java applications for CICS, Part 1: JCICS, Gradle, and Maven)[https://developer.ibm.com/technologies/java/tutorials/spring-boot-java-applications-for-cics-part-1-jcics-maven-gradle].
+Eclipse is used as the preferred IDE.
+
+Once your newly generated project has been imported into your IDE, you should have the `Application.java` and `ServletInitializer.java` classes which provide the basic framework of a Spring Boot web application.
+
+In the first part of this tutorial series, we looked in-depth at how to use Gradle or Maven to build a Spring Boot web application for CICS. 
+Using that knowledge, you should be in a position to enhance build.gradle or pom.xml to include dependencies on additional libraries. 
+In particular, we require Spring Boot JMS support, support for JTA bean managed transactions, and support for JCICS. 
+
+
+For Gradle, your build file should have the additional dependencies over and above the `spring-boot-starter-web`:
+``` gradle    
+    compileOnly enforcedPlatform("com.ibm.cics:com.ibm.cics.ts.bom:5.5-20200519131930-PH25409")
+    compileOnly("com.ibm.cics:com.ibm.cics.server")          
+    
+    implementation("org.springframework.integration:spring-integration-jms")
+    
+    implementation("javax.transaction:javax.transaction-api")
+    
+    compileOnly("javax.jms:javax.jms-api")    
+```
+
+For Maven, you’ll need this additonal dependency in your pom.xml:
+
+``` maven
+    
+    <dependency>
+      <groupId>com.ibm.cics</groupId>
+      <artifactId>com.ibm.cics.server</artifactId>
+    </dependency>
+  
+    <dependency>
+      <groupId>org.springframework.integration</groupId>
+      <artifactId>spring-integration-jms</artifactId>
+    </dependency>
+   
+    <dependency>
+      <groupId>javax.jms</groupId>
+      <artifactId>javax.jms-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+   
+    <dependency>
+      <groupId>javax.transaction</groupId>
+      <artifactId>javax.transaction-api</artifactId>
+      <scope>provided</scope>
+    </dependency>      
+
+```
+
+### 2 Send a simple JMS message
+
+
+In this section, you’ll learn how to send a simple JMS message to an MQ queue using Spring’s `JmsTemplate`, and a JMS connection factory.
+
+The first job is to update our Application class to create a Spring Bean which returns the JMS connection factory from the Liberty server configuration. 
+We will use the name `jms/qcf1` for our connection factory. 
+``` java
+
+	private static final String CONNECTION_FACTORY = "jms/qcf1";	
+
+	@Bean
+	public ConnectionFactory connectionFactory() 
+	{	
+		try 
+		{			
+			ConnectionFactory factory = InitialContext.doLookup(CONNECTION_FACTORY);					
+			return factory;
+		} 
+		catch (NamingException e) 
+		{
+			e.printStackTrace();
+			return null;
+		}
+	}
+````
+
+Next we need to add a REST controller class, to provide a REST API to invoke the JMS send.
+The root endpoint that provides usage details looks like this and also contains an `@Autowired` annotation for the JmsTemplate we will use later.
+``` java
+@RestController
+public class JMSMessageSendController 
+{
+	@Autowired
+	private JmsTemplate jmsTemplate;
+	
+    
+    /**
+     * Root endpoint - returns date/time + usage information
+     * 
+     * @return the Usage information 
+     */	
+	@GetMapping("/")
+	public String root() 
+	{						
+        Date myDate = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss.SSSSSS");
+        String myDateString = sdf.format(myDate);
+        
+        return "<h1>Spring Boot JMS REST sample usage: Date/Time: " + myDateString + "</h1>"
+        + "<h3>Usage:</h3>"
+        + "<b>/send/{queue}?data={input string}</b> - write input string to specified queue <br>"
+        ;
+	}		
+```
+
+
+JmsTemplate is the central class in Spring’s JMS core package. It simplifies the use of JMS and helps to avoid common errors. 
+JmsTemplate executes the JMS operations leaving application code to provide the input and extract results.
+The class a... 
+
+We will add a new `send()` method to our REST controller, which takes as input the name of the JMS queue as a URI path variable, and the data to be written as a query string called "data". 
+The format used will be `/send/{queue}?data={input string}`
+
+
+
+``` java	
+
+	@RequestMapping("/send/{jmsq}")
+	public String send(@RequestParam(value = "data") String inputStr, @PathVariable String jmsq) 
+	{
+	   
+	    try {
+	        jmsTemplate.convertAndSend(jmsq, inputStr);
+	    }
+	    catch (JmsException jre) {
+	        return "ERROR on JMS send " + jre.getMessage();   
+
+	    }
+
+	    return inputStr;
+	}
+```
+
+We use the `convertAndSend()` method on the auto wired JmsTemplate to write the input string to the JMS queue specified. 
+This method converts the input String object to a JMS message with a configured org.springframework.messaging.converter.MessageConverter). 
+Need a bit more details on this.....
+
+
+
+### 5 Deploy and run the sample
+
+### 5.1 Configuring IBM MQ
+
+Setup the following resources in the IBM MQ queue manager:
+
+- MQ queue named DEMO.MDPQUEUE
+- MQ queue named DEMO.SIMPLEQ
+
+> Note: Queues should be defined as shareable to allow usage in the multi-threaded environment in Liberty. 
+In addition it is advisable to set the `BackoutThreshold` attribute on the queue to a finite value, to prevent the MDP being constantly redriven if the MDP fails during the processing of the message.
+
+### 5.2 Configuring CICS
+
+-   servlet\-3.1 or servlet\-4.0(With servlet\-3.1 and WAR file Tomcat must be excluded and for servlet\-4.0 it doesn't matter.)
+-   cicsts:security\-1.0
+-   jms\-2.0
+-   wmqJmsClient\-2.0
+-   jndi\-1.0
+-   concurrent\-1.0
+
+
+``` xml
+    <jmsQueueConnectionFactory connectionManagerRef="ConMgrJms" jndiname="jms/qcf1">
+        <properties.wmqJms channel="<>" hostName="localhost" port="<>" queueManager="<>" transportType="CLIENT"/>
+    </jmsQueueConnectionFactory>
+	
+	<variable name="wmqJmsClient.rar.location" value="/path/to/wmq/rar/wmq.jmsra.rar"/>
+```
+### Summary
+
+### Additional resources
+
+
+------------------------------
 
 
 ## Part 1:Create the Spring Boot application
 
-Generate the Spring Boot Java web application using the website [https://start.spring.io/](https://start.spring.io/)  with the following selections:
-
--   Project: **Maven Project**
--   Language: **Java**
--   Spring Boot: **2.2.4**
--   Project Metadata
--   Group: **com.ibm.cicsdev**
- -  Artifact: **com.ibm.cicsdev.springboot.jms**
- -  Description: **Demo project for Spring Boot**
- -  Package Name: **com.ibm.cicsdev.springboot.jms**
- -  Packaging: **War**
- -  Java: **8**
- -  Dependencies
- -  **Spring Web**
-
-
-Click on Generate, download and unzip the sample project, then import it into your IDE. If you are using Eclipse you can do this by selecting File > Import > Existing Gradle Project.
-
-Now you need to update Application.java to add some necessary beans. We will introduce these beans one by one later. Code for Application.java now is as below:
-
-```
-/\*
-
- \* Copyright 2012\-2019 the original author or authors.
-
- \*
-
- \* Copyright IBM Corp. 2019 All Rights Reserved
-
- \*
-
- \* Licensed under the Apache License, Version 2.0 (the "License");
-
- \* you may not use this file except in compliance with the License.
-
- \* You may obtain a copy of the License at
-
- \*
-
-\* [https://www.apache.org/licenses/LICENSE\-2.0](https://www.apache.org/licenses/LICENSE-2.0)
-
- \*
-
- \* Unless required by applicable law or agreed to in writing, software
-
- \* distributed under the License is distributed on an "AS IS" BASIS,
-
- \* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
- \* See the License for the specific language governing permissions and
-
- \* limitations under the License.
-
- \*/
-
-package com.ibm.cicsdev.springboot.jms;
-
-import javax.jms.ConnectionFactory;
-
-import javax.naming.InitialContext;
-
-import javax.naming.NamingException;
-
-import javax.transaction.UserTransaction;
-
-import org.springframework.boot.SpringApplication;
-
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import org.springframework.context.annotation.Bean;
-
-import org.springframework.core.task.TaskExecutor;
-
-import org.springframework.jms.annotation.EnableJms;
-
-import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
-
-import org.springframework.jms.config.JmsListenerContainerFactory;
-
-import org.springframework.scheduling.concurrent.DefaultManagedTaskExecutor;
-
-import org.springframework.transaction.PlatformTransactionManager;
-
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import org.springframework.transaction.jta.JtaTransactionManager;
-
-/\*\*
-
- \*
-
- \* This class is the entry point of the spring boot application which contains @SpringBootApplication annotation and the main method to run the Spring Boot application.
-
- \*
-
- \* A single @SpringBootApplication annotation can be used to enable those three features, that is:
-
- \*
-
- \*   @EnableAutoConfiguration: enable Spring Boot’s auto\-configuration mechanism
-
- \*   @ComponentScan: scan all the beans and package declarations when the application initializes.
-
- \*   @Configuration: allow to register extra beans in the context or import additional configuration classes
-
- \*
-
- \* @EnableJms: enable JMS listener annotated endpoints.
-
- \* @EnableTransactionManagement: manage transaction
-
- \*/
-
-@SpringBootApplication
-
-@EnableJms
-
-@EnableTransactionManagement
-
-public class Application {
-
-    private static final String CONNECTION\_FACTORY = "jms/cf";
-
-    public static void main(String\[\] args) {
-
-        SpringApplication.run(Application.class, args);
-
-    }
-
-    @Bean
-
-    public ConnectionFactory connectionFactory() {
-
-        try {
-
-            // Look up the connection factory from Liberty
-
-            ConnectionFactory fact = InitialContext.doLookup(CONNECTION\_FACTORY);
-
-            return fact;
-
-        } catch (NamingException e) {
-
-            e.printStackTrace();
-
-            return null;
-
-        }
-
-    }
-
-    @Bean
-
-    public JmsListenerContainerFactory<?> myFactory(ConnectionFactory connectionFactory) {
-
-        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-
-        factory.setConnectionFactory(connectionFactory);
-
-        factory.setTaskExecutor(taskExecutor());
-
-        factory.setTransactionManager(platformTransactionManager(connectionFactory));
-
-        return factory;
-
-    }
-
-    @Bean
-
-    public PlatformTransactionManager platformTransactionManager(ConnectionFactory connectionFactory) {
-
-        try {
-
-            UserTransaction tx = InitialContext.doLookup("java:comp/UserTransaction");
-
-            return new JtaTransactionManager(tx);
-
-        } catch (NamingException e) {
-
-            e.printStackTrace();
-
-            return null;
-
-        }
-
-    }
-
-    @Bean
-
-    public TaskExecutor taskExecutor() {
-
-        return new DefaultManagedTaskExecutor();
-
-    }
-
-}
-```
-
-Add JMSMessageReceiver.java as below:
-
-```
-/\*
-
- \* Copyright 2012\-2020 the original author or authors.
-
- \*
-
- \* Copyright IBM Corp. 2020 All Rights Reserved
-
- \*
-
- \* Licensed under the Apache License, Version 2.0 (the "License");
-
- \* you may not use this file except in compliance with the License.
-
- \* You may obtain a copy of the License at
-
- \*
-
-\* [https://www.apache.org/licenses/LICENSE\-2.0](https://www.apache.org/licenses/LICENSE-2.0)
-
- \*
-
- \* Unless required by applicable law or agreed to in writing, software
-
- \* distributed under the License is distributed on an "AS IS" BASIS,
-
- \* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-
- \* See the License for the specific language governing permissions and
-
- \* limitations under the License.
-
- \*/
-
-
-package com.ibm.cicsdev.springboot.jms;
-
-import java.util.Random;
-
-import org.springframework.jms.annotation.JmsListener;
-
-import org.springframework.stereotype.Component;
-
-import org.springframework.transaction.annotation.Transactional;
-
-import com.ibm.cics.server.CicsException;
-
-import com.ibm.cics.server.TSQ;
-
-/\*\*
-
- \*
-
- \* This class is to receive the message and write the data to a CICS TSQ "SPRINGQ".
-
- \*
-
- \* @Component: denote this class as Component.
-
- \* @Transactional: manage transaction
-
- \* @JmsListener: defines the name of the Destination that this method should listen to
-
- \* and the reference to the JmsListenerContainerFactory to use to create the underlying message listener container.
-
- \*/
-
-@Component
-
-public class JMSMessageReceiver {
-
-    private static final Random R = new Random(1);
-
-    @Transactional
-
-    @JmsListener(destination = "BROWNAD.REQUEST.QUEUE", containerFactory = "myFactory")
-
-    public void receiveMessage(String data) throws CicsException {
-
-        System.out.println("Received <" + data + ">");
-
-        // Write the data to a CICS TSQ "SPRINGQ" by JCICS API
-
-        TSQ tsq = new TSQ();
-
-        tsq.setName("SPRINGQ");
-
-        tsq.writeString(data);
-
-        if (R.nextBoolean()) {
-
-            // If set the TSQ as a recoverable resource, then it will be rollbacked if meeting exception
-
-            System.out.println("Rolling back");
-
-            throw new RuntimeException("Expected exception");
-
-        } else {
-
-            System.out.println("Committing");
-
-        }
-
-    }
-
-}
-```
 
 
 Add SendJMSController.java as below:
@@ -910,23 +788,23 @@ For JMS, Spring uses JmsTransactionManager which  implements PlatformTransactio
 So based on the above knowledge, we should add a new Spring @Bean annotation as below, it will define a *PlatformTransactionManager* returning the *JtaTransactionManager.*
 
 ```
- [@Bean](https://jazz104.hursley.ibm.com:9443/jazz/users/Bean)
 
- **public** PlatformTransactionManager platformTransactionManager(ConnectionFactory connectionFactory) {
+@Bean
+public PlatformTransactionManager platformTransactionManager(ConnectionFactory connectionFactory) {
 
         //return new JmsTransactionManager(connectionFactory);
 
- **try** {
+ try {
 
             UserTransaction tx = InitialContext. *doLookup*("java:comp/UserTransaction");
 
- **return**  **new** JtaTransactionManager(tx);
+ return  **new** JtaTransactionManager(tx);
 
-} **catch** (NamingException e) {
+} catch (NamingException e) {
 
             e.printStackTrace();
 
- **return**  **null**;
+ return  null;
 
         }
 
@@ -982,7 +860,7 @@ e) Start and enable your CICS Liberty JVM server. If you don't yet have a Libert
 
 If you're customising an existing configuration, you'll need to make sure you include the following feature:
 
--   servlet\-3.1 or servlet\-4.0(With servlet\-3.1 and WAR file Tomcat must be exluded, for JAR file it doesn't matter, and for servlet\-4.0 it doesn't matter.)
+-   servlet\-3.1 or servlet\-4.0(With servlet\-3.1 and WAR file Tomcat must be excluded and for servlet\-4.0 it doesn't matter.)
 -   cicsts:security\-1.0
 -   jms\-2.0
 -   wmqJmsClient\-2.0
