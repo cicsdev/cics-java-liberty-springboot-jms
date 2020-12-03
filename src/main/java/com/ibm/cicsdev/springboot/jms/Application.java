@@ -1,12 +1,7 @@
-/* Licensed Materials - Property of IBM                                   */
-/*                                                                        */
-/* SAMPLE                                                                 */
 /*                                                                        */
 /* (c) Copyright IBM Corp. 2020 All Rights Reserved                       */
 /*                                                                        */
-/* US Government Users Restricted Rights - Use, duplication or disclosure */
-/* restricted by GSA ADP Schedule Contract with IBM Corp                  */
-/*                                                                        */
+
 
 package com.ibm.cicsdev.springboot.jms;
 
@@ -45,8 +40,8 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 @EnableTransactionManagement
 public class Application 
 {
-	private static final String CONNECTION_FACTORY = "jms/cf";
-
+    // JMS connection factory
+	private static final String CONNECTION_FACTORY = "jms/qcf1";
 	
 	public static void main(String[] args) 
 	{	
@@ -55,6 +50,8 @@ public class Application
 
 	
 	/**
+	 * Lookup the JMS connection factory and create the Spring bean
+	 * 
 	 * @return, the connection factory from Liberty
 	 */
 	@Bean
@@ -75,8 +72,11 @@ public class Application
 	
 
 	/**
+	 * Create JMS listener for the MDP, setting the CF, task executor, and Txn Mgr
+	 * from Spring beans.
+	 * 
 	 * @param connectionFactory, the connection factory from Liberty
-	 * @return a JMS listener container from the factory
+	 * @return a JMS listener container from the factory for the MDP
 	 */
 	@Bean
 	public JmsListenerContainerFactory<?> myFactoryBean(ConnectionFactory connectionFactory) 
@@ -90,6 +90,8 @@ public class Application
 
 	
 	/**
+	 *  Create a JTA enabled Spring TransactionManager.
+	 * 
 	 * @param connectionFactory, the connection factory from Liberty
 	 * @return a JtaTransactionManager to manage the transaction
 	 */
@@ -111,8 +113,9 @@ public class Application
 
 	
 	/**
-	 * @return the DefaultManagedTaskExecutor, ensures we supply Liberty
-	 * executor threads to Spring (which are CICS enabled by default)
+	 * Create Liberty executor, so threads are CICS enabled
+	 * 
+	 * @return the DefaultManagedTaskExecutor
 	 */
 	@Bean
 	public TaskExecutor taskExecutor() 
