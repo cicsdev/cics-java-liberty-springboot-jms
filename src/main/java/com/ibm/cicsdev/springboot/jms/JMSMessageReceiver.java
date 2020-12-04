@@ -26,8 +26,8 @@ import com.ibm.cics.server.TSQ;
 public class JMSMessageReceiver 
 {
     
-    // JMS queue
-    private static final String MDP_QUEUE = "WHARMBY.MDBQUEUE";
+    // JMS queue to receive messages
+    private static final String MDP_QUEUE = "SPRING.QUEUE";
     
     // CICS TSQ
     private static final String TSQ_NAME = "SPRINGQ";
