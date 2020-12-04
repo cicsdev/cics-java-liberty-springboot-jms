@@ -14,7 +14,7 @@ import com.ibm.cics.server.TSQ;
 /**
  * 
  * This message driven POJO (MDP) receives a JMS message and writes the data to a CICS TSQ. 
- * Updates are either rolled back or committed based on the value of the string read from the MDB queue.
+ * Updates are either rolled back or committed based on the value of the string read from the MDP queue.
  * 
  * @Component: denote this class as Component.
  * @Transactional: Use Spring Boot managed transactions
