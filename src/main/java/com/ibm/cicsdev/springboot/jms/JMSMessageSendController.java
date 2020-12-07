@@ -29,18 +29,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RestController
 public class JMSMessageSendController 
 {
-	@Autowired
-	private JmsTemplate jmsTemplate;
-	
+    @Autowired
+    private JmsTemplate jmsTemplate;
+    
     
     /**
      * Root endpoint - returns date/time + usage information
      * 
      * @return the Usage information 
-     */	
-	@GetMapping("/")
-	public String root() 
-	{						
+     */    
+    @GetMapping("/")
+    public String root() 
+    {                        
         Date myDate = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss.SSSSSS");
         String myDateString = sdf.format(myDate);
@@ -49,27 +49,27 @@ public class JMSMessageSendController
         + "<h3>Usage:</h3>"
         + "<b>/send/{queue}?data={input string}</b> - write input string to specified queue <br>"
         ;
-	}		
-	
-	
-	/**
-	 * @param inputStr, input data from the MDP queue
-	 * @param jmsq, path variable for JMS queue name
-	 * @return, the JMS message to send to the MQ destination
-	 */
-	@RequestMapping("/send/{jmsq}")
-	public String send(@RequestParam(value = "data") String inputStr, @PathVariable String jmsq) 
-	{
-	   
-	    try {
-	        jmsTemplate.convertAndSend(jmsq, inputStr);
-	    }
-	    catch (JmsException jre) {
-	        return "ERROR on JMS send " + jre.getMessage();   
+    }        
+    
+    
+    /**
+     * @param inputStr, input data from the MDP queue
+     * @param jmsq, path variable for JMS queue name
+     * @return, the JMS message to send to the MQ destination
+     */
+    @RequestMapping("/send/{jmsq}")
+    public String send(@RequestParam(value = "data") String inputStr, @PathVariable String jmsq) 
+    {
+       
+        try {
+            jmsTemplate.convertAndSend(jmsq, inputStr);
+        }
+        catch (JmsException jre) {
+            return "ERROR on JMS send " + jre.getMessage();   
 
-	    }
+        }
 
-	    return inputStr;
-	}
+        return inputStr;
+    }
 
 }

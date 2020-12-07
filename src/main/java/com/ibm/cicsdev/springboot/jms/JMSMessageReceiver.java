@@ -31,35 +31,35 @@ public class JMSMessageReceiver
     
     // CICS TSQ
     private static final String TSQ_NAME = "SPRINGQ";
-	
-	/**
-	 * @param data, the message received from the MQ destination queue
-	 * @throws Exception CicsConditionException
-	 */
-	@Transactional (rollbackFor=Exception.class)
-	@JmsListener(destination = MDP_QUEUE, containerFactory = "myFactoryBean")
-	public void receiveMessage(String data) throws Exception 
-	{	
-		System.out.println("Received <" + data + ">");
-		
+    
+    /**
+     * @param data, the message received from the MQ destination queue
+     * @throws Exception CicsConditionException
+     */
+    @Transactional (rollbackFor=Exception.class)
+    @JmsListener(destination = MDP_QUEUE, containerFactory = "myFactoryBean")
+    public void receiveMessage(String data) throws Exception 
+    {    
+        System.out.println("Received <" + data + ">");
+        
         // Use JCICS API to write data to a CICS TSQ
-		// If TSQ write fails, CICSConditionException will be thrown and rollback the JTA Txn
-		TSQ tsq = new TSQ();
-		tsq.setName(TSQ_NAME);
-		tsq.writeString(data);
-		
-		// If the TSQ is defined as a recoverable throwing an exception will rollback updates
-		if (data.equalsIgnoreCase("rollback"))
-		{   
-			System.out.println("Rolling back");
-			throw new Exception("Expected rollback exception");
-		} 
-		
-		// Otherwise, commit (default action of @Transactional on method)
-		else 
-		{
-			
-			System.out.println("Committing");
-		}
-	}
+        // If TSQ write fails, CICSConditionException will be thrown and rollback the JTA Txn
+        TSQ tsq = new TSQ();
+        tsq.setName(TSQ_NAME);
+        tsq.writeString(data);
+        
+        // If the TSQ is defined as a recoverable throwing an exception will rollback updates
+        if (data.equalsIgnoreCase("rollback"))
+        {   
+            System.out.println("Rolling back");
+            throw new Exception("Expected rollback exception");
+        } 
+        
+        // Otherwise, commit (default action of @Transactional on method)
+        else 
+        {
+            
+            System.out.println("Committing");
+        }
+    }
 }
