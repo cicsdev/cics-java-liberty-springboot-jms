@@ -1,6 +1,5 @@
 # Spring Boot Java applications for CICS, Part 5: JMS
 
-** THIS IS NOT YET READY FOR REVIEW **
 
 ## Introduction 
 
