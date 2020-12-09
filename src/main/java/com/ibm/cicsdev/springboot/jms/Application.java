@@ -41,7 +41,7 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 public class Application 
 {
     // JMS connection factory
-    private static final String CONNECTION_FACTORY = "jms/cf1";
+    private static final String CONNECTION_FACTORY = "jms/cf";
     
     public static void main(String[] args) 
     {    
