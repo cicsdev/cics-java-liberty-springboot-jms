@@ -61,21 +61,20 @@
             <groupId>org.springframework.integration</groupId>
             <artifactId>spring-integration-jms</artifactId>
         </dependency>
-
-        <!-- For Bean managed transactions (provided) -->
-        <dependency>
-            <groupId>javax.transaction</groupId>
-            <artifactId>javax.transaction-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- For JMS API (provided) -->
+        
+        <!-- Java EE JMS API (provided) -->
         <dependency>
             <groupId>javax.jms</groupId>
             <artifactId>javax.jms-api</artifactId>
             <scope>provided</scope>
         </dependency>
 
+        <!-- JTA transaction management (provided) -->
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>javax.transaction-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
     </dependencies>
 

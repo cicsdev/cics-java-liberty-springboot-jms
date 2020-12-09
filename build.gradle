@@ -46,10 +46,12 @@ dependencies
     // Spring Integration JMS Support    
     implementation("org.springframework.integration:spring-integration-jms")
     
-    // For JTA transaction management 
-    implementation("javax.transaction:javax.transaction-api")
+    // Java EE JMS API 
+    compileOnly("javax.jms:javax.jms-api")  
     
-    // For JMS API 
-    compileOnly("javax.jms:javax.jms-api")         
+    // JTA transaction management 
+    compileOnly("javax.transaction:javax.transaction-api")
+    
+      
 }
 
