@@ -401,8 +401,8 @@ To invoke the application simply find the base URL for the application in the Li
 
 ### Summary
 
-Using JDBC to access relational databases is made easy in Spring using the JmsTemplate. 
-After completing these tutorial, you should be able to start to build fully functional Java-based business applications in CICS using Spring Boot. 
+Using JMS to access messaging systems is made easy in Spring using the JmsTemplate. 
+After completing this tutorial series, you should be able to start to build fully functional Java-based business applications in CICS using Spring Boot. 
 
 
 ### Additional resources
