@@ -317,11 +317,12 @@ Next we need to update the `myFactoryBean` in the Application class to set the t
 ```
 
 Lastly we need to add the `@Transactional (rollbackFor=Exception.class)` annotation to the `receiveMessage()` method in our `JMSMessageReceiver` class 
-to denote this as a Spring Boot container managed transaction.
-The`rollbackFor=Exception.class` will ensure that the method rolls back for any exceptions, not just unchecked Exceptions.
+to denote this as a Spring Boot container managed transaction. The`rollbackFor=Exception.class` setting ensures that the method rolls back for any exceptions, not just unchecked Exceptions.
 
-Next we will add a test on the input message string `data`, and if the data equals "rollback" then we will throw an Exception causing a rollback of the JTA transaction.
+In addtion we will add a test on the input message string `data`, and if the data equals "rollback" then we will throw an Exception causing a rollback of the JTA transaction.
 Equally if the JCICS `TSQ.writeString()` method fails with a checked `CICSConditionExcption`, this will likewise cause a rollback.
+
+Our JMSMessageReceiver now looks like this.
 
 
 ``` java
