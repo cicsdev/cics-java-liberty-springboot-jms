@@ -167,9 +167,9 @@ The value of 10 on `maxPoolSize` is used as an example only. Set `maxPoolSize` t
     - `A CWWKT0016I: Web application available (default_host): http://myzos.mycompany.com:httpPort/cics-java-liberty-springboot-jms-0.1.0`
     - `I SRVE0292I: Servlet Message - [com.ibm.cicsdev.springboot.jms-0.1.0]:.Initializing Spring embedded WebApplicationContext`
 
-2. Copy the context root from message CWWKT0016I along with the REST service suffix `send/SPRING.QUEUE?data=I LOVE CICS` into you web browser. e.g. `http://myzos.mycompany.com:httpPort/com.ibm.cicsdev.springboot.jms-0.1.0/send/SPRING.QUEUE?data=I LOVE CICS``.
+2. Copy the context root from message CWWKT0016I along with the REST service suffix `send/SPRING.QUEUE?data=I LOVE CICS` into you web browser. e.g. `http://myzos.mycompany.com:httpPort/com.ibm.cicsdev.springboot.jms-0.1.0/send/SPRING.QUEUE?data=I LOVE CICS`.
 
-3. Check if the specified TSQ has the information you expected by executing the CICS command "CEBR SPRINGQ". For this example, you should just see one `I LOVE CICS` in TSQ SPRINGQ. 
+3. Check if the specified TSQ has the information you expected by executing the CICS 3270 command `CEBR SPRINGQ`. For this example, you should just see one `I LOVE CICS` in TSQ SPRINGQ. 
 
 4. Check that the Spring MDP Bean has been driven by viewing the messages in the Liberty messages.log
 
