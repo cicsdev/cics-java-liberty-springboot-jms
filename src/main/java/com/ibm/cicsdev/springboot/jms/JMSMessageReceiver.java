@@ -57,8 +57,7 @@ public class JMSMessageReceiver
         
         // Otherwise, commit (default action of @Transactional on method)
         else 
-        {
-            
+        {            
             System.out.println("Committing");
         }
     }
