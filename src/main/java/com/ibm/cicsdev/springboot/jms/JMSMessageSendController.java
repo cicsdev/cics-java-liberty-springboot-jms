@@ -53,7 +53,7 @@ public class JMSMessageSendController
     
     
     /**
-     * @param inputStr, input data from the MDP queue
+     * @param inputStr, input data to be written to queue
      * @param jmsq, path variable for JMS queue name
      * @return, the JMS message to send to the MQ destination
      */
