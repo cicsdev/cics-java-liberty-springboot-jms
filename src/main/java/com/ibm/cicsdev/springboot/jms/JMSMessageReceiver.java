@@ -40,7 +40,7 @@ public class JMSMessageReceiver
     @JmsListener(destination = MDP_QUEUE, containerFactory = "myFactoryBean")
     public void receiveMessage(String data) throws Exception 
     {    
-        System.out.println("Received <" + data + ">");
+        System.out.println("JMSMessageReceiver - received <" + data + ">");
         
         // Use JCICS API to write data to a CICS TSQ
         // If TSQ write fails, CICSConditionException will be thrown and rollback the JTA Txn
@@ -51,14 +51,14 @@ public class JMSMessageReceiver
         // If the TSQ is defined as a recoverable throwing an exception will rollback updates
         if (data.equalsIgnoreCase("rollback"))
         {   
-            System.out.println("Rolling back");
+            System.out.println("JMSMessageReceiver - Rolling back");
             throw new Exception("Expected rollback exception");
         } 
         
         // Otherwise, commit (default action of @Transactional on method)
         else 
         {            
-            System.out.println("Committing");
+            System.out.println("JMSMessageReceiver - Committing");
         }
     }
 }

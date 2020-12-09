@@ -65,7 +65,7 @@ public class JMSMessageSendController
             jmsTemplate.convertAndSend(jmsq, inputStr);
         }
         catch (JmsException jre) {
-            return "ERROR on JMS send " + jre.getMessage();   
+            return "JMSMessageSendController - ERROR on JMS send " + jre.getMessage();   
 
         }
 
