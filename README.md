@@ -105,6 +105,17 @@ This creates a WAR file inside the `target` directory.
 
 ## Deploying
 
+### IBM MQ
+
+You will need to configure
+- An MQ queue manager listening on a accessible TCP/IP port.
+- A queue named SPRING.QUEUE
+
+> Note: Queues should be defined as shareable to allow usage in the multi-threaded environment in Liberty. 
+In addition it is advisable to set the `BackoutThreshold` attribute on the queue, to prevent the MDP being constantly re-driven if the MDP fails during the processing of the message.
+
+### CICS Liberty
+
 - Ensure you have the following features in `server.xml`: 
     - `<servlet-3.1>` or `<servlet-4.0>` depending on the version of Java EE in use.
     - `<concurrent-1.0>`.
@@ -129,7 +140,7 @@ This creates a WAR file inside the `target` directory.
     <variable name="wmqJmsClient.rar.location" value="/wmq.jmsra-9.0.4.0.rar"/>
     ```
 
-The value of 10 on maxPoolSize is used as an example only. Set maxPoolSize to the maximum number of concurrent users of the connection factory.
+The value of 10 on `maxPoolSize` is used as an example only. Set `maxPoolSize` to the maximum number of concurrent users of the connection factory.
  
 - Deployment option 1:
     - Copy and paste the built WAR from your *target* or *build/libs* directory into a Eclipse CICS bundle project and create a new WAR bundlepart that references the WAR file. Then deploy the CICS bundle project from CICS Explorer using the **Export Bundle Project to z/OS UNIX File System** wizard.
@@ -156,9 +167,12 @@ The value of 10 on maxPoolSize is used as an example only. Set maxPoolSize to th
     - `A CWWKT0016I: Web application available (default_host): http://myzos.mycompany.com:httpPort/cics-java-liberty-springboot-jms-0.1.0`
     - `I SRVE0292I: Servlet Message - [com.ibm.cicsdev.springboot.jms-0.1.0]:.Initializing Spring embedded WebApplicationContext`
 
-2. Copy the context root from message CWWKT0016I along with the REST service suffix 'send?data=I LOVE CICS' into you web browser. e.g. `http://myzos.mycompany.com:httpPort/com.ibm.cicsdev.springboot.jms-0.1.0/send?data=I LOVE CICS`.
+2. Copy the context root from message CWWKT0016I along with the REST service suffix `send/SPRING.QUEUE?data=I LOVE CICS` into you web browser. e.g. `http://myzos.mycompany.com:httpPort/com.ibm.cicsdev.springboot.jms-0.1.0/send/SPRING.QUEUE?data=I LOVE CICS`.
 
-3. Check if the specified TSQ has the information you expected by executing the CICS command "CEBR SPRINGQ". For this example, you should just see one `I LOVE CICS` in TSQ SPRINGQ. The other one is roll backed because of meeting exceptions when receiving messages.
+3. Check if the specified TSQ has the information you expected by executing the CICS 3270 command `CEBR SPRINGQ`. For this example, you should just see one `I LOVE CICS` in TSQ SPRINGQ. 
+
+4. Check that the Spring MDP Bean has been driven by viewing the messages in the Liberty messages.log
+
 
 ## License
 

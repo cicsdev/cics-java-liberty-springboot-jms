@@ -1,87 +1,93 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-	
-  <!-- Inherit defaults from Spring Boot Parent -->
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.3.0.RELEASE</version>
-  </parent>
-	
-  <!-- Application properties -->
-  <groupId>com.ibm.cicsdev.springboot</groupId>
-  <artifactId>cics-java-liberty-springboot-jms</artifactId>
-  <version>0.1.0</version>
-  <name>cics-java-liberty-springboot-jms</name>
-  <description>Demo project for Spring Boot</description>
-  <properties>
-    <java.version>1.8</java.version>
-  </properties>
-   
-  <!-- CICS TS V5.5 BOM (as of May 2020) -->
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>com.ibm.cics</groupId>
-        <artifactId>com.ibm.cics.ts.bom</artifactId>
-        <version>5.5-20200519131930-PH25409</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <dependencies>
-    <!-- Compile against, but don't include JCICS in the final build (version and scope are from BOM) -->
-    <dependency>
-      <groupId>com.ibm.cics</groupId>
-      <artifactId>com.ibm.cics.server</artifactId>
-    </dependency>
-   
-    <!-- Spring Boot web support -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-
-    <!-- Spring Integration JMS Support  -->
-    <dependency>
-      <groupId>org.springframework.integration</groupId>
-      <artifactId>spring-integration-jms</artifactId>
-    </dependency>
-   
-    <!--  For JMS API (provided) -->
-    <dependency>
-      <groupId>javax.jms</groupId>
-      <artifactId>javax.jms-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-   
-    <!-- For Bean managed transactions (provided) -->
-    <dependency>
-      <groupId>javax.transaction</groupId>
-      <artifactId>javax.transaction-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-   
-    <!-- Don't include TomCat in the runtime build, but do put it in WEB-INF so it can be run standalone a well as embedded --> 
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-tomcat</artifactId>
-      <scope>provided</scope>
-    </dependency>
-  </dependencies>
-    
-  <!-- Package as an executable war (default jar) -->
-  <packaging>war</packaging>
-  <build>
-    <plugins>
-      <plugin>
+    <!-- Inherit defaults from Spring Boot Parent -->
+    <parent>
         <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
-  
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.0.RELEASE</version>
+    </parent>
+
+    <!-- Application properties -->
+    <groupId>com.ibm.cicsdev.springboot</groupId>
+    <artifactId>cics-java-liberty-springboot-jms</artifactId>
+    <version>0.1.0</version>
+    <name>cics-java-liberty-springboot-jms</name>
+    <description>Demo project for Spring Boot</description>
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <!-- CICS TS V5.5 BOM (as of May 2020) -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.ibm.cics</groupId>
+                <artifactId>com.ibm.cics.ts.bom</artifactId>
+                <version>5.5-20200519131930-PH25409</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+
+        <!-- Spring Boot web support -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Don't include TomCat in the runtime build, but do put it in WEB-INF 
+            so it can be run standalone a well as embedded -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Compile against, but don't include JCICS in the final build (version 
+            and scope are from BOM) -->
+        <dependency>
+            <groupId>com.ibm.cics</groupId>
+            <artifactId>com.ibm.cics.server</artifactId>
+        </dependency>
+
+        <!-- Spring Integration JMS Support -->
+        <dependency>
+            <groupId>org.springframework.integration</groupId>
+            <artifactId>spring-integration-jms</artifactId>
+        </dependency>
+
+        <!-- For Bean managed transactions (provided) -->
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>javax.transaction-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- For JMS API (provided) -->
+        <dependency>
+            <groupId>javax.jms</groupId>
+            <artifactId>javax.jms-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+
+    </dependencies>
+
+    <!-- Package as an executable war (default jar) -->
+    <packaging>war</packaging>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>

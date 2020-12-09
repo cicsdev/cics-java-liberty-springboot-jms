@@ -1,12 +1,7 @@
-/* Licensed Materials - Property of IBM                                   */
-/*                                                                        */
-/* SAMPLE                                                                 */
 /*                                                                        */
 /* (c) Copyright IBM Corp. 2020 All Rights Reserved                       */
 /*                                                                        */
-/* US Government Users Restricted Rights - Use, duplication or disclosure */
-/* restricted by GSA ADP Schedule Contract with IBM Corp                  */
-/*                                                                        */
+
 
 package com.ibm.cicsdev.springboot.jms;
 
@@ -45,79 +40,87 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 @EnableTransactionManagement
 public class Application 
 {
-	private static final String CONNECTION_FACTORY = "jms/cf";
+    // JMS connection factory
+    private static final String CONNECTION_FACTORY = "jms/cf1";
+    
+    public static void main(String[] args) 
+    {    
+        SpringApplication.run(Application.class, args);    
+    }
 
-	
-	public static void main(String[] args) 
-	{	
-		SpringApplication.run(Application.class, args);	
-	}
+    
+    /**
+     * Lookup the JMS connection factory and create the Spring bean
+     * 
+     * @return, the connection factory from Liberty
+     */
+    @Bean
+    public ConnectionFactory connectionFactory() 
+    {    
+        try 
+        {
+            // Look up the connection factory from Liberty (server.xml) using JNDI
+            ConnectionFactory factory = InitialContext.doLookup(CONNECTION_FACTORY);                    
+            return factory;
+        } 
+        catch (NamingException e) 
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
 
-	
-	/**
-	 * @return, the connection factory from Liberty
-	 */
-	@Bean
-	public ConnectionFactory connectionFactory() 
-	{	
-		try 
-		{
-			// Look up the connection factory from Liberty (server.xml) using JNDI
-			ConnectionFactory factory = InitialContext.doLookup(CONNECTION_FACTORY);					
-			return factory;
-		} 
-		catch (NamingException e) 
-		{
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
+    /**
+     * Create JMS listener for the MDP, setting the CF, task executor, and Txn Mgr
+     * from Spring beans.
+     * 
+     * @param connectionFactory, the connection factory from Liberty
+     * @return a JMS listener container from the factory for the MDP
+     */
+    @Bean
+    public JmsListenerContainerFactory<?> myFactoryBean(ConnectionFactory connectionFactory) 
+    {    
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory);
+        factory.setTaskExecutor(taskExecutor());
+        factory.setTransactionManager(platformTransactionManager(connectionFactory));
+        return factory;
+    }
 
-	/**
-	 * @param connectionFactory, the connection factory from Liberty
-	 * @return a JMS listener container from the factory
-	 */
-	@Bean
-	public JmsListenerContainerFactory<?> myFactoryBean(ConnectionFactory connectionFactory) 
-	{	
-		DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-		factory.setConnectionFactory(connectionFactory);
-		factory.setTaskExecutor(taskExecutor());
-		factory.setTransactionManager(platformTransactionManager(connectionFactory));
-		return factory;
-	}
+    
+    /**
+     *  Create a JTA enabled Spring TransactionManager.
+     * 
+     * @param connectionFactory, the connection factory from Liberty
+     * @return a JtaTransactionManager to manage the transaction
+     */
+    @Bean
+    public PlatformTransactionManager platformTransactionManager(ConnectionFactory connectionFactory) 
+    {
+        try 
+        {
+            // Use JNDI to lookup Liberty's transaction context, and return a transaction manager from it
+            UserTransaction tx = InitialContext.doLookup("java:comp/UserTransaction");
+            return new JtaTransactionManager(tx);
+        } 
+        catch (NamingException e) 
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-	
-	/**
-	 * @param connectionFactory, the connection factory from Liberty
-	 * @return a JtaTransactionManager to manage the transaction
-	 */
-	@Bean
-	public PlatformTransactionManager platformTransactionManager(ConnectionFactory connectionFactory) 
-	{
-		try 
-		{
-			// Use JNDI to lookup Liberty's transaction context, and return a transaction manager from it
-			UserTransaction tx = InitialContext.doLookup("java:comp/UserTransaction");
-			return new JtaTransactionManager(tx);
-		} 
-		catch (NamingException e) 
-		{
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	
-	/**
-	 * @return the DefaultManagedTaskExecutor, ensures we supply Liberty
-	 * executor threads to Spring (which are CICS enabled by default)
-	 */
-	@Bean
-	public TaskExecutor taskExecutor() 
-	{	
-		return new DefaultManagedTaskExecutor();
-	}
+    
+    /**
+     * Ensure we supply Spring with Liberty executor threads which are CICS enabled by default
+     * 
+     * @return the DefaultManagedTaskExecutor
+     */
+    @Bean
+    public TaskExecutor taskExecutor() 
+    {    
+        return new DefaultManagedTaskExecutor();
+    }
 
 }
