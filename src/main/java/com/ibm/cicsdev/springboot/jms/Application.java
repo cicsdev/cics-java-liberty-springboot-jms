@@ -113,7 +113,7 @@ public class Application
 
     
     /**
-     * Create Liberty executor, so threads are CICS enabled
+     * Ensure we supply Spring with Liberty executor threads which are CICS enabled by default
      * 
      * @return the DefaultManagedTaskExecutor
      */
