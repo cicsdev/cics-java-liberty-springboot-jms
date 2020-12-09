@@ -1,8 +1,8 @@
 # cics-java-liberty-springboot-jms
 
-This sample project demonstrates how to use the Spring Boot JMS template to integrate with CICS and use IBM MQ as the message broker. The sample is intended for deployment to a CICS Liberty JVM server. 
+This sample project demonstrates how to use the Spring Boot JMS template to integrate with CICS and use IBM MQ as the message provider. The sample is intended for deployment to a CICS Liberty JVM server. 
 
-Invoking the REST end-point of the application will write a message with the data you provide to MQ. A JMS listener endpoint receives the message from MQ and writes it to a CICS Temporary storage queue (TSQ). Reading from the queue and writing to the CICS TSQ are performed within the same transaction using JTA and the Spring Boot `@Transactional` annotation, to ensure everything commits or rolls back as one.
+Invoking the REST end-point of the application will write a message with the data you provide to MQ. A JMS listener endpoint receives the message from MQ and writes it to a CICS Temporary storage queue (TSQ). Reading from the JMS queue and writing to the CICS TSQ are performed within the same transaction using JTA via a Spring Boot container managed transaction, ensuring everything commits or rolls back as one recoverable unit.
 
 For further details about the development of this sample refer to the tutorial [Spring Boot Java applications for CICS, Part 5: JMS](blog.md)
 
