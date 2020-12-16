@@ -130,7 +130,7 @@ In addition it is advisable to set the `BackoutThreshold` attribute on the queue
 
 - Add the JMS MQ Connection Factory configuration to `server.xml`
 
-  Here's an example of configuration needed in `server.xml`. Substitute the *channel*, *hostname*, *port* and *queueManager* values to your installation values, and fill in the MQ rar location value with the location on zFS to which you downloaded the rar: 
+  Here's an example of configuration needed in `server.xml`. Substitute the *channel*, *hostname*, *port* and *queueManager* values to your installation values, and fill in the MQ rar location value with the location on zFS to which you downloaded the rar. Download instructions can be found linked from the prerequisites section earlier: 
 
     ``` XML
     <!-- JMS MQ Connection Factory -->

@@ -3,8 +3,7 @@
 
 ## Introduction 
 
-This tutorial, the fifth in the [Spring Boot Java applications for CICS](https://developer.ibm.com/series/learning-path-spring-boot-java-applications-for-cics/) series, 
-demonstrates how to use Spring Boot's JMS capabilities integrated into a CICS Liberty server and with IBM MQ as the JMS provider. You'll learn how to develop the application, build it with Gradle or Maven, and then deploy and test it in CICS.
+This tutorial, the fifth in the [Spring Boot Java applications for CICS](https://developer.ibm.com/series/learning-path-spring-boot-java-applications-for-cics/) series, demonstrates how to use Spring Boot's JMS capabilities integrated into a CICS Liberty server and with IBM MQ as the JMS provider. You'll learn how to develop the application, build it with Gradle or Maven, and then deploy and test it in CICS.
 
 Spring Boot offers a number of options to integrate with messaging systems and the JMS API. The options range from the simple convenience of the JmsTemplate, to a *message driven POJO* (MDP) which handles 
 incoming asynchronous messages through use of the `@JmsListener` annotation.  
@@ -33,6 +32,8 @@ The application source and build scripts are available in the [cicsdev/cics-java
 1. Java SE 1.8 on the workstation
 1. An Eclipse development environment on the workstation (optional)
 1. Either Gradle or Apache Maven on the workstation (optional if using Wrappers)
+1. IBM MQ Resource Adapter for the WebSphere Application Server Liberty available from [MQ Resource Adapter](https://www.ibm.com/support/pages/node/489235)
+
 
 
 ## Estimated time
@@ -51,6 +52,8 @@ For further details on how to do this, refer to part 1 of this tutorial series, 
 Eclipse is used as the preferred IDE.
 
 Once your newly generated project has been imported into your IDE, you should have the `Application.java` and `ServletInitializer.java` classes which provide the basic framework of a Spring Boot web application.
+
+You will notice that the `Application` class has the annotations `@EnableJMS` and `@EnableTransactionManagement`  in addition to the standard `@SpringBootApplication`. These annotations are necessary and should be self-explanatory for enabling the Spring Boot components we require for our Transactional, JMS, application.   
 
 For Gradle, your build file will need three additional dependencies: `spring-integration-jms`, `javax.transaction-api` and `javax.jms-api` over and above those required for the Part 1 tutorial.
 The Java EE JMS and JTA dependencies are marked as `compileOnly`, this is because the Liberty runtime provides its own implementations. We want to compile against those dependencies, but not package them into the build as would be done if the `implementation` directive was chosen.
@@ -135,7 +138,8 @@ For Maven, the equivalent pom.xml dependencies should look like this:
 
 In this section, you’ll learn how to send a simple JMS message to an MQ queue using Spring’s `JmsTemplate` and a JMS connection factory.
 
-The first job is to update our Spring Application class to create a Spring Bean which returns the JMS connection factory from the Liberty server configuration. 
+The first job is to update our Spring Application class to create a Spring Bean which returns the JMS connection factory from the Liberty server configuration. See [README](https://github.com/cicsdev/cics-java-liberty-springboot-jms/blob/master/README.md) for details of the JMS connection factory configuration.
+
 We will use the JNDI name `jms/cf` for our connection factory as follows:
 
 ``` java
