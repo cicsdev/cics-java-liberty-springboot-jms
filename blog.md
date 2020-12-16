@@ -260,7 +260,7 @@ public JmsListenerContainerFactory<?> myFactoryBean(ConnectionFactory connection
 ```
 
 
-Note: in order to take advantage of CICS integration and to call the JCICS API, the container factory should set it's task executor to be the `DefaultManagedTaskExecutor`. Although this executor is a Liberty one it has been primed to supply CICS-enabled threads - thus Spring itself will be supplied CICS enabled threads. The sample code uses `setTaskExecutor(taskExecutor())` to achieve this because a `TSQ` class is used to write to the temporary storage queue "SPRINGQ".  
+Note: in order to take advantage of CICS integration and to call the JCICS API, the container factory should set its task executor to be the `DefaultManagedTaskExecutor`. Although this executor is a Liberty one it has been primed to supply CICS-enabled threads - thus Spring itself will be supplied CICS enabled threads. The sample code uses `setTaskExecutor(taskExecutor())` to achieve this because a `TSQ` class is used to write to the temporary storage queue "SPRINGQ".  
 
 Without performing this action, the JmsListenerContainerFactory won't run on a CICS-enabled thread. If a request tries to use the JCICS API, you will experience the error below:
 
