@@ -25,12 +25,13 @@ import com.ibm.cics.server.TSQ;
 @Component
 public class JMSMessageReceiver 
 {
-    
+	
     // JMS queue to receive messages
     private static final String MDP_QUEUE = "SPRING.QUEUE";
     
     // CICS TSQ
     private static final String TSQ_NAME = "SPRINGQ";
+    
     
     /**
      * @param data, the message received from the MQ destination queue
@@ -53,8 +54,7 @@ public class JMSMessageReceiver
         {   
             System.out.println("JMSMessageReceiver - Rolling back");
             throw new Exception("Expected rollback exception");
-        } 
-        
+        }         
         // Otherwise, commit (default action of @Transactional on method)
         else 
         {            

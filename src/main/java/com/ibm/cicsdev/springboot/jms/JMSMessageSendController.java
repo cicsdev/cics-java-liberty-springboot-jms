@@ -59,12 +59,13 @@ public class JMSMessageSendController
      */
     @RequestMapping("/send/{jmsq}")
     public String send(@RequestParam(value = "data") String inputStr, @PathVariable String jmsq) 
-    {
-       
-        try {
+    {       
+        try 
+        {
             jmsTemplate.convertAndSend(jmsq, inputStr);
         }
-        catch (JmsException jre) {
+        catch (JmsException jre) 
+        {
             return "JMSMessageSendController - ERROR on JMS send " + jre.getMessage();   
 
         }

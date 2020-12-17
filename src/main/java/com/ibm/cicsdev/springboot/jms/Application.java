@@ -83,7 +83,11 @@ public class Application
     {    
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
+        
+        // For JCICS integration it is important to set the JMSListenerContainerFactory to
+        // the DefaultManagedTaskExecutor
         factory.setTaskExecutor(taskExecutor());
+        
         factory.setTransactionManager(platformTransactionManager(connectionFactory));
         return factory;
     }
