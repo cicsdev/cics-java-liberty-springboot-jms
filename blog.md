@@ -53,8 +53,6 @@ Eclipse is used as the preferred IDE.
 
 Once your newly generated project has been imported into your IDE, you should have the `Application.java` and `ServletInitializer.java` classes which provide the basic framework of a Spring Boot web application.
 
-You will notice that the `Application` class has the annotations `@EnableJMS` and `@EnableTransactionManagement`  in addition to the standard `@SpringBootApplication`. These annotations are necessary and should be self-explanatory for enabling the Spring Boot components we require for our Transactional, JMS, application.   
-
 For Gradle, your build file will need three additional dependencies: `spring-integration-jms`, `javax.transaction-api` and `javax.jms-api` over and above those required for the Part 1 tutorial.
 The Java EE JMS and JTA dependencies are marked as `compileOnly`, this is because the Liberty runtime provides its own implementations. We want to compile against those dependencies, but not package them into the build as would be done if the `implementation` directive was chosen.
 Your gradle.build file should look like this.
@@ -138,28 +136,39 @@ For Maven, the equivalent pom.xml dependencies should look like this:
 
 In this section, you’ll learn how to send a simple JMS message to an MQ queue using Spring’s `JmsTemplate` and a JMS connection factory.
 
-The first job is to update our Spring Application class to create a Spring Bean which returns the JMS connection factory from the Liberty server configuration. See [README](https://github.com/cicsdev/cics-java-liberty-springboot-jms/blob/master/README.md) for details of the JMS connection factory configuration.
-
-We will use the JNDI name `jms/cf` for our connection factory as follows:
+The first job is to update our Spring Application class. We will need to add the `@EnableJms` and `@EnableTransactionManagement` Spring annotations in addition to the standard `@SpringBootApplication`. These annotations are necessary for enabling the Spring Boot components we require for our transactional JMS application. 
+We also need to create a Spring Bean which returns a JMS connection factory defined in the Liberty server configuration. We will use the JNDI name `jms/cf` for our connection factory.
+> See [README](https://github.com/cicsdev/cics-java-liberty-springboot-jms/blob/master/README.md) for details of how to configure the JMS connection factory in the Liberty server.xml.
 
 ``` java
-
-private static final String CONNECTION_FACTORY = "jms/cf";	
-
-@Bean
-public ConnectionFactory connectionFactory() 
-{	
-	try 
-	{			
-		ConnectionFactory factory = InitialContext.doLookup(CONNECTION_FACTORY);					
-		return factory;
-	} 
-	catch (NamingException e) 
-	{
-		e.printStackTrace();
-		return null;
-	}
+@SpringBootApplication
+@EnableJms
+@EnableTransactionManagement
+public class Application 
+{
+    private static final String CONNECTION_FACTORY = "jms/cf";
+    
+    public static void main(String[] args) 
+    {    
+        SpringApplication.run(Application.class, args);    
+    }
+    
+    @Bean
+    public ConnectionFactory connectionFactory() 
+    {    
+        try 
+        {
+            ConnectionFactory factory = InitialContext.doLookup(CONNECTION_FACTORY);                    
+            return factory;
+        } 
+        catch (NamingException e) 
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
+
 ````
 
 Next we need to add a REST controller class called `JMSMessageSendController`, this will provide a REST API to invoke the JMS send operation. 
