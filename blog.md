@@ -136,7 +136,7 @@ For Maven, the equivalent pom.xml dependencies should look like this:
 
 In this section, you’ll learn how to send a simple JMS message to an MQ queue using Spring’s `JmsTemplate` and a JMS connection factory.
 
-The first job is to update our Spring Application class. We will need to add the `@EnableJms` and `@EnableTransactionManagement` Spring annotations in addition to the standard `@SpringBootApplication`. These annotations are necessary for enabling the Spring Boot components we require for our transactional JMS application. 
+The first job is to update our Spring Application class. We will need to add the `@EnableJms` and `@EnableTransactionManagement` Spring annotations in addition to the standard `@SpringBootApplication`. These annotations are necessary to enable the Spring Boot components we require for our transactional JMS application. 
 We also need to create a Spring Bean which returns a JMS connection factory defined in the Liberty server configuration. We will use the JNDI name `jms/cf` for our connection factory.
 > See [README](https://github.com/cicsdev/cics-java-liberty-springboot-jms/blob/master/README.md) for details of how to configure the JMS connection factory in the Liberty server.xml.
 
@@ -273,7 +273,7 @@ public JmsListenerContainerFactory<?> myFactoryBean(ConnectionFactory connection
 ```
 
 
-Note: in order to take advantage of CICS integration and to call the JCICS API, the container factory should set its task executor to be the `DefaultManagedTaskExecutor`. Although this executor is a Liberty one it has been primed to supply CICS-enabled threads - thus Spring itself will be supplied CICS enabled threads. The sample code uses `setTaskExecutor(taskExecutor())` to achieve this because a `TSQ` class is used to write to the temporary storage queue "SPRINGQ".  
+Note: in order to take advantage of CICS integration and to call the JCICS API, the container factory should set its task executor to be the `DefaultManagedTaskExecutor`. Although this executor is a Liberty one it has been primed to supply CICS-enabled threads - thus Spring itself will be supplied CICS enabled threads. The sample code uses the `TSQ` class to write to a CICS temporary storage queue "SPRINGQ", and so we use `setTaskExecutor(taskExecutor())` to achieve the necessary JCICS integration.   
 
 Without performing this action, the JmsListenerContainerFactory won't run on a CICS-enabled thread. If a request tries to use the JCICS API, you will experience the error below:
 
@@ -300,11 +300,11 @@ Having done this the MDP should be able to receive messages written to the SPRIN
 In order to make our JMSMessageReceiver class fully transactional we need to ensure that reading messages from the JMS queue is coordinated with writing to the CICS TSQ.
 When using the JMS resource adapter in client mode, 'sends' and 'receives' do not operate under the control of the CICS unit-of-work, so to coordinate these two actions we need to use a global transaction and the Java Transaction API.
 `PlatformTransactionManager` is the central interface in Spring's transaction infrastructure and  
-Spring makes available several implementations of the platform transaction manager interface for handling transactions across JDBC, JPA, Hibernate, JMS and so on. 
+Spring offers several implementations of the platform transaction manager interface for handling transactions across JDBC, JPA, Hibernate, JMS and so on. 
 
 Spring makes available the `JmsTransactionManager`, which implements a local transaction using the `PlatformTransactionManager`, or Spring's `JtaTransactionManager` which provides global transaction
 support based on JTA.
-In our scenario to integrate recoverable operations across our JMSListner and the CICS TSQ resource we will need to use the Spring `JtaTransactionManager`. For more information see [Spring Boot Java applications for CICS, Part 3: Transactions](https://developer.ibm.com/tutorials/spring-boot-java-applications-for-cics-part-3-transactions)
+In our scenario to integrate recoverable operations across our JMSListener and the CICS TSQ resource we will need to use the Spring `JtaTransactionManager`. For more information see [Spring Boot Java applications for CICS, Part 3: Transactions](https://developer.ibm.com/tutorials/spring-boot-java-applications-for-cics-part-3-transactions)
 
 Based on the this knowledge, amend your Spring Application class by adding a new Spring Bean for a JTA enabled PlatformTransactionManager as follows.
 
