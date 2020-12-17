@@ -78,7 +78,7 @@ dependencies
 
 For Maven, the equivalent pom.xml dependencies should look like this:
 
-``` maven   
+``` xml   
   
   <dependencyManagement>
     <dependencies>
