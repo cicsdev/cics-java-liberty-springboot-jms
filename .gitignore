@@ -2,3 +2,11 @@
 /target/
 /build/
 /bin/
+.DS_Store
+src/.DS_Store
+src/main/.DS_Store
+src/main/java/.DS_Store
+src/main/java/com/.DS_Store
+src/main/java/com/ibm/.DS_Store
+src/main/java/com/ibm/cicsdev/.DS_Store
+src/main/java/com/ibm/cicsdev/springboot/.DS_Store
