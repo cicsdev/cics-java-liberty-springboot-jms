@@ -20,7 +20,7 @@ This tutorial will show you how to:
 The sample is a web application and all requests can be driven from a browser. The application uses the Spring Boot web interface to process HTTP RESTful
 GET requests. The web application then uses a JMS connection factory to write a message to an MQ queue, which then triggers an Spring Boot MDP which receives the message and writes the contents to a CICS temporary storage queue. In a real-world implementation, other types of REST interfaces, such as POST, would be more appropriate. GET requests are used here for simplicity.
 
-![JMS](graphics/JMSspringboot.png)
+![JMS](graphics/JMS_springboot.png)
 
 The application source and build scripts are available in the [cicsdev/cics-java-liberty-springboot-jms](https://github.com/cicsdev/cics-java-liberty-springboot-jms) repository.
 
