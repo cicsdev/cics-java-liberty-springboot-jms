@@ -5,8 +5,7 @@
 
 This tutorial, the fifth in the [Spring Boot Java applications for CICS](https://developer.ibm.com/series/learning-path-spring-boot-java-applications-for-cics/) series, demonstrates how to use Spring Boot's JMS capabilities integrated into a CICS Liberty server and with IBM MQ as the JMS provider. You'll learn how to develop the application, build it with Gradle or Maven, and then deploy and test it in CICS.
 
-Spring Boot offers a number of options to integrate with messaging systems and the JMS API. The options range from the simple convenience of the JmsTemplate, to a *message driven POJO* (MDP) which handles 
-incoming asynchronous messages through use of the `@JmsListener` annotation.  
+Spring Boot offers a number of options to integrate with messaging systems and the JMS API. The options range from the simple convenience of the JmsTemplate, to a *message driven POJO* (MDP) which handles incoming asynchronous messages through use of the `@JmsListener` annotation.  
 
 
 ## Learning Objectives
@@ -18,8 +17,10 @@ This tutorial will show you how to:
 1. Understand how to add transaction management to the MDP
 1. Test the sample in CICS
 
-The sample is a web application and all requests can be driven from a browser. The application uses the Spring Boot web interface to process GET REST requests. 
-In a real-world implementation, other types of REST interfaces, such as POST, would be more appropriate. GET requests are used here for simplicity.
+The sample is a web application and all requests can be driven from a browser. The application uses the Spring Boot web interface to process HTTP RESTful
+GET requests. The web application then uses a JMS connection factory to write a message to an MQ queue, which then triggers an Spring Boot MDP which receives the message and writes the contents to a CICS temporary storage queue. In a real-world implementation, other types of REST interfaces, such as POST, would be more appropriate. GET requests are used here for simplicity.
+
+![JMS](graphics/JMSspringboot.png)
 
 The application source and build scripts are available in the [cicsdev/cics-java-liberty-springboot-jms](https://github.com/cicsdev/cics-java-liberty-springboot-jms) repository.
 
