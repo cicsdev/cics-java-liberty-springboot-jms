@@ -55,7 +55,14 @@
             <groupId>com.ibm.cics</groupId>
             <artifactId>com.ibm.cics.server</artifactId>
         </dependency>
-
+        
+        <!-- JTA transaction management (provided) -->
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>javax.transaction-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        
         <!-- Spring Integration JMS Support -->
         <dependency>
             <groupId>org.springframework.integration</groupId>
@@ -66,13 +73,6 @@
         <dependency>
             <groupId>javax.jms</groupId>
             <artifactId>javax.jms-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- JTA transaction management (provided) -->
-        <dependency>
-            <groupId>javax.transaction</groupId>
-            <artifactId>javax.transaction-api</artifactId>
             <scope>provided</scope>
         </dependency>
 
