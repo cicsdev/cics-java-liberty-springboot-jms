@@ -3,7 +3,7 @@
 
 ## Introduction 
 
-This tutorial, the fifth in the [Spring Boot Java applications for CICS](https://developer.ibm.com/series/learning-path-spring-boot-java-applications-for-cics/) series, demonstrates how to use Spring Boot's JMS capabilities integrated into a CICS Liberty server and with IBM MQ as the JMS provider. You'll learn how to develop the application, build it with Gradle or Maven, and then deploy and test it in CICS.
+This tutorial, the fifth in the [Spring Boot Java applications for CICS](https://developer.ibm.com/series/learning-path-spring-boot-java-applications-for-cics/) series, demonstrates how to use Spring Boot's JMS capabilities integrated into a CICS Liberty server with IBM MQ as the JMS provider. You'll learn how to develop the application, build it with Gradle or Maven, and then deploy and test it in CICS.
 
 Spring Boot offers a number of options to integrate with messaging systems and the JMS API. The options range from the simple convenience of the JmsTemplate, to a *message driven POJO* (MDP) which handles incoming asynchronous messages through use of the `@JmsListener` annotation.  
 
@@ -54,8 +54,8 @@ Eclipse is used as the preferred IDE.
 Once your newly generated project has been imported into your IDE, you should have the `Application.java` and `ServletInitializer.java` classes which provide the basic framework of a Spring Boot web application.
 
 For Gradle, your build file will need three additional dependencies: `spring-integration-jms`, `javax.transaction-api` and `javax.jms-api` over and above those required for the Part 1 tutorial.
-The Java EE JMS and JTA dependencies are marked as `compileOnly`, this is because the Liberty runtime provides its own implementations. We want to compile against those dependencies, but not package them into the build as would be done if the `implementation` directive was chosen.
-Your gradle.build file should look like this.
+The Java EE JTA and JMS dependencies should be marked as compileOnly because the Liberty runtime provides its own implementations. You want to compile against those dependencies, but not package them into the build as would be done if the implementation directive was chosen.
+Your gradle.build file should look like this: 
 
 ``` gradle    
 dependencies 
@@ -63,16 +63,16 @@ dependencies
     implementation("org.springframework.boot:spring-boot-starter-web")
 
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
-  
+
     compileOnly enforcedPlatform("com.ibm.cics:com.ibm.cics.ts.bom:5.5-20200519131930-PH25409")
-      
-    compileOnly("com.ibm.cics:com.ibm.cics.server")          
-    
-    implementation("org.springframework.integration:spring-integration-jms")
-	
+
+    compileOnly("com.ibm.cics:com.ibm.cics.server")       
+   
+    compileOnly("javax.transaction:javax.transaction-api") 
+
     compileOnly("javax.jms:javax.jms-api")  
-    
-    compileOnly("javax.transaction:javax.transaction-api")     
+
+    implementation("org.springframework.integration:spring-integration-jms")  
 }   
 ```
 
@@ -110,11 +110,6 @@ For Maven, the equivalent pom.xml dependencies should look like this:
   </dependency>
 
   <dependency>
-    <groupId>org.springframework.integration</groupId>
-    <artifactId>spring-integration-jms</artifactId>
-  </dependency>
-
-  <dependency>
     <groupId>javax.transaction</groupId>
     <artifactId>javax.transaction-api</artifactId>
     <scope>provided</scope>
@@ -124,6 +119,11 @@ For Maven, the equivalent pom.xml dependencies should look like this:
     <groupId>javax.jms</groupId>
     <artifactId>javax.jms-api</artifactId>
     <scope>provided</scope>
+  </dependency>
+
+  <dependency>
+    <groupId>org.springframework.integration</groupId>
+    <artifactId>spring-integration-jms</artifactId>
   </dependency>
 
 </dependencies>
@@ -290,9 +290,7 @@ public TaskExecutor taskExecutor()
 	return new DefaultManagedTaskExecutor();
 }
  ```
-
-The final step to support use of the task executor is to add the `concurrent-1.0` Liberty feature to the Liberty feature manager list in server.xml. 
-Having done this the MDP should be able to receive messages written to the SPRING.QUEUE and then write to the SPRINGQ TSQ using the JCICS API.
+The final step to support use of the task executor is to add the concurrent-1.0 Liberty feature to the Liberty feature manager list in server.xml. Once you’ve done this, the MDP should be able to receive messages from MQ written to the SPRING.QUEUE and then write to the CICS temporary storage queue SPRINGQ using the JCICS API. 
 
 
 ### 4 Add transaction management
@@ -411,9 +409,12 @@ Add the following Liberty features to your server.xml
 
 > For further details on configuring Liberty and deploying the sample to CICS, see the [README](https://github.com/cicsdev/cics-java-liberty-springboot-jms/blob/master/README.md) in the Git repository.
 
-To invoke the application simply find the base URL for the application in the Liberty messages.log e.g. `http://myzos.mycompany.com:httpPort/com.ibm.cicsdev.springboot.jms\-0.1.0](http://myzos.myompany.com:httpPort/com.ibm.cicsdev.springboot.jms-0.1.0`
+To invoke the application simply find the base URL for the application in the Liberty messages.log e.g. 
+`CWWKT0016I: Web application available (default_host): http://myzos.mycompany.com:32000/cics-java-liberty-springboot-jms-0.1.0/`
 
-1. Paste the base URL along with the REST service suffix `send/SPRING.QUEUE?data=I LOVE CICS` into the browser e.g. `http://myzos.mycompany.com:httpPort/com.ibm.cicsdev.springboot.jms\-0.1.0/send?data=I](http://myzos.mycompany.com:httpPort/com.ibm.cicsdev.springboot.jms-0.1.0/send/SPRING.QUEUE?data=I LOVE CICS`.  The browser will prompt for basic authentication. 
+1. Paste the base URL along with the REST service suffix `send/SPRING.QUEUE?data=I LOVE CICS` into the browser e.g. 
+`http://myzos.mycompany.com:httpPort/cics-java-liberty-springboot-jms-0.1.0/send/SPRING.QUEUE?data=I LOVE CICS.`
+The browser will prompt for basic authentication. 
 
 1. Next write the string "rollback" to the same queue using the REST service suffix `/send/SPRING.QUEUE?data=rollback`. 
 
@@ -425,7 +426,8 @@ To invoke the application simply find the base URL for the application in the Li
 ### Summary
 
 Using JMS to access messaging systems is made easy in Spring using the JmsTemplate. 
-After completing this tutorial series, you should be able to start to build fully functional Java-based business applications in CICS using Spring Boot. 
+Be sure to review the full set of tutorials and [Spring Boot samples](https://github.com/search?q=topic%3Aspring-boot+org%3Acicsdev&type=Repositories) on other Spring Boot technologies from the CICS Java development team. 
+
 
 
 ### Additional resources
