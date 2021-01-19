@@ -52,7 +52,7 @@ Maven (POM.xml):
 
 ## Updating
 
-The JMSMessageReceiver.java and the SendJVMController.java classes both assume an MQ destination of `SPRING.QUEUE`. If that value does not meet your enterprise naming standards, please ensure you modify both occurrences consistently.
+The JMSMessageReceiver.java class assumes an MQ destination of `SPRING.QUEUE`. If that value does not meet your enterprise naming standards, this can be updated by modifying the static variable `MDP_QUEUE`.
 
 ## Building 
 
