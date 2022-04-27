@@ -1,19 +1,13 @@
 plugins
 {
-    id 'org.springframework.boot' version '2.6.7' apply false
+	id 'org.springframework.boot' version '2.6.7' 
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'eclipse'
     id 'idea'
     id 'war'
 }
 
-apply plugin: 'io.spring.dependency-management'
-
-dependencyManagement {
-	imports {
-		mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
-	}
-}
 group = 'com.ibm.cicsdev.springboot'
 archivesBaseName='cics-java-liberty-springboot-jms'
 version = '0.1.0'
