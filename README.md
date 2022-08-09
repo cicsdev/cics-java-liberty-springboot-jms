@@ -4,7 +4,7 @@ This sample project demonstrates how to use the Spring Boot JMS template to inte
 
 Invoking the REST end-point of the application will write a message with the data you provide to MQ. A JMS listener endpoint receives the message from MQ and writes it to a CICS Temporary storage queue (TSQ). Reading from the JMS queue and writing to the CICS TSQ are performed within the same transaction using JTA via a Spring Boot container managed transaction, ensuring everything commits or rolls back as one recoverable unit.
 
-For further details about the development of this sample refer to the IBM developer tutorial [Spring Boot Java applications for CICS, Part 5: JMS](https://developer.ibm.com/components/ibmz/tutorials/spring-boot-java-applications-for-cics-part-5-jms/)
+For further details about the development of this sample refer to the IBM developer tutorial [Spring Boot Java applications for CICS, Part 5: JMS](https://developer.ibm.com/tutorials/spring-boot-java-applications-for-cics-part-5-jms/)
 
 ## Prerequisites
 
