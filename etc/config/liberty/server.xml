@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server description="CICS Liberty JVM server template configuration">
+
+    <!-- Enable features -->
+    <featureManager>
+        <feature>cicsts:core-1.0</feature>
+        <feature>servlet-3.1</feature>
+        <feature>concurrent-1.0</feature>
+        <feature>jms-2.0</feature>
+        <feature>wmqJmsClient-2.0</feature>
+        <feature>jndi-1.0</feature>
+    </featureManager>
+
+    <!-- Default HTTP End Point -->
+    <httpEndpoint id="defaultHttpEndpoint" host="*" httpPort="9080" />
+
+    <!-- Reduce z/FS overheads by reducing config and app polling -->
+    <config monitorInterval="5s" updateTrigger="polled" />
+    <applicationMonitor updateTrigger="disabled" dropins="dropins"
+        dropinsEnabled="false" pollingRate="5s" />
+
+    <!-- MQ JMS resource adpater location -->
+    <variable name="wmqJmsClient.rar.location"
+        value="/usr/lpp/mqm/V9R0M0/java/lib/jca/wmq.jmsra.rar" />
+
+    <!-- JMS MQ Connection Factory -->
+    <jmsConnectionFactory id="jms/cf" jndiName="jms/cf">
+        <properties.wmqJms
+            transportType="CLIENT"
+            hostname="zos.example.com"
+            channel="SYSTEM.DEF.SVRCONN"
+            port="1414"
+            queueManager="QM1" />
+        <connectionManager maxPoolSize="10" minPoolSize="0" />
+    </jmsConnectionFactory>
+</server>
