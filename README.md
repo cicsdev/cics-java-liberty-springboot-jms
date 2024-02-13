@@ -119,12 +119,12 @@ In addition it is advisable to set the `BackoutThreshold` attribute on the queue
 ### CICS Liberty
 
 - Ensure you have the following features in `server.xml`: 
-    - `<servlet-3.1>` or `<servlet-4.0>` depending on the version of Java EE in use.
-    - `<concurrent-1.0>`.
-    - `<jms-2.0>`.
-    - `<wmqJmsClient-2.0>`.
-    - `<jndi-1.0>`.
-    - `<cicsts:security-1.0>` if CICS security is enabled. 
+    - `servlet-3.1` or `servlet-4.0` depending on the version of Java EE in use.
+    - `concurrent-1.0`.
+    - `jms-2.0`.
+    - `wmqJmsClient-2.0`.
+    - `jndi-1.0`.
+    - `cicsts:security-1.0` if CICS security is enabled. 
 
 >**Note:** `servlet-4.0` will only work for CICS TS V5.5 or later
 
