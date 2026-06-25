@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.0</version>
+        <version>3.2.0</version>
     </parent>
 
     <!-- Application properties -->
@@ -17,20 +17,19 @@
     <name>cics-java-liberty-springboot-jms</name>
     <description>Demo project for Spring Boot</description>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.release>${java.version}</maven.compiler.release>
     </properties>
 
-    <!-- CICS TS V5.5 BOM (as of May 2020) -->
+    <!-- CICS BOM (as of Sept 2024) -->
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>com.ibm.cics</groupId>
                 <artifactId>com.ibm.cics.ts.bom</artifactId>
-                <version>5.5-20200519131930-PH25409</version>
+                <version>6.1-20250812133513-PH63856</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -60,10 +59,10 @@
             <artifactId>com.ibm.cics.server</artifactId>
         </dependency>
         
-        <!-- JTA transaction management (provided) -->
+        <!-- Jakarta EE JTA transaction management (provided) -->
         <dependency>
-            <groupId>javax.transaction</groupId>
-            <artifactId>javax.transaction-api</artifactId>
+            <groupId>jakarta.transaction</groupId>
+            <artifactId>jakarta.transaction-api</artifactId>
             <scope>provided</scope>
         </dependency>
         
@@ -73,10 +72,10 @@
             <artifactId>spring-integration-jms</artifactId>
         </dependency>
         
-        <!-- Java EE JMS API (provided) -->
+        <!-- Jakarta EE JMS API (provided) -->
         <dependency>
-            <groupId>javax.jms</groupId>
-            <artifactId>javax.jms-api</artifactId>
+            <groupId>jakarta.jms</groupId>
+            <artifactId>jakarta.jms-api</artifactId>
             <scope>provided</scope>
         </dependency>
 
@@ -93,25 +92,5 @@
         </plugins>
     </build>
 
-
-    <!-- 
-    Publishes artifacts to here if the deploy goal is used. 
-
-    The values here can be passed on the maven command line
-    using the -D flag syntax 
-  
-    for example:
-    -Dpublish_repo_snapshots_name=my-repo 
-    -->
-    <distributionManagement>
-        <snapshotRepository>
-            <id>${publish_repo_snapshots_name}</id>
-            <url>${publish_repo_snapshots_url}</url>
-        </snapshotRepository>
-        <repository>
-            <id>${publish_repo_releases_name}</id>
-            <url>${publish_repo_releases_url}</url>
-        </repository>
-    </distributionManagement>
 
 </project>
