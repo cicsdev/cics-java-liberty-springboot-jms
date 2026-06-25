@@ -17,12 +17,6 @@
     <!-- Reduce z/FS overheads by reducing config and app polling -->
     <config monitorInterval="5s" updateTrigger="polled" />
     <applicationMonitor updateTrigger="disabled" dropins="dropins"
-    <!-- Application configuration -->
-    <application id="cics-java-liberty-springboot-jms-0.1.0" 
-                 location="/u/i005o8/apps/cics-java-liberty-springboot-jms-0.1.0.war" 
-                 name="cics-java-liberty-springboot-jms-0.1.0" 
-                 type="war" />
-
         dropinsEnabled="false" pollingRate="5s" />
 
     <!-- MQ JMS resource adpater location -->
