@@ -5,10 +5,11 @@
 
 package com.ibm.cicsdev.springboot.jms;
 
-import javax.jms.ConnectionFactory;
+import jakarta.jms.ConnectionFactory;
+import jakarta.transaction.UserTransaction;
+
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.transaction.UserTransaction;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
