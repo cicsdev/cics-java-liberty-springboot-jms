@@ -1,5 +1,5 @@
 # cics-java-liberty-springboot-jms
-[![Build](https://github.com/cicsdev/cics-java-liberty-springboot-jms/actions/workflows/java.yaml/badge.svg)](https://github.com/cicsdev/cics-java-liberty-springboot-jms/actions/workflows/java.yaml)
+[![Build](https://github.com/cicsdev/cics-java-liberty-springboot-jms/actions/workflows/build.yaml/badge.svg)](https://github.com/cicsdev/cics-java-liberty-springboot-jms/actions/workflows/build.yaml)
 
 This sample project demonstrates how to use the Spring Boot JMS template to integrate with CICS and use IBM MQ as the message provider. The sample is intended for deployment to a CICS Liberty JVM server. 
 
