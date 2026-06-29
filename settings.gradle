@@ -1,1 +1,11 @@
+// ============================================================================
+// Root Project Configuration
+// ============================================================================
 rootProject.name = 'cics-java-liberty-springboot-jms'
+
+// ============================================================================
+// Subprojects
+// ============================================================================
+include(':cics-java-liberty-springboot-jms-app')
+include(':cics-java-liberty-springboot-jms-cicsbundle')
+
