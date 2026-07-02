@@ -5,7 +5,7 @@
   
   <!-- Inherit from parent POM -->
   <parent>
-    <groupId>com.ibm.cicsdev</groupId>
+    <groupId>com.ibm.cicsdev.springboot</groupId>
     <artifactId>cics-java-liberty-springboot-jms</artifactId>
     <version>1.0.0</version>
     <relativePath>../pom.xml</relativePath>
@@ -13,29 +13,13 @@
   
   <!--  Application module properties -->
   <artifactId>cics-java-liberty-springboot-jms-app</artifactId>
-  <name>com.ibm.cicsdev.springboot.jms.app</name>
+  <name>CICS Spring Boot JMS - Application</name>
   <description>Demo project for Spring Boot with CICS JMS - Application</description>
   <packaging>war</packaging>
   
   <properties>
-    <java.version>17</java.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.release>${java.version}</maven.compiler.release>
     <spring-boot.repackage.skip>true</spring-boot.repackage.skip>
   </properties>
-  
-  <!-- CICS TS V6.1 BOM (as of Sept 2024) -->
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>com.ibm.cics</groupId>
-        <artifactId>com.ibm.cics.ts.bom</artifactId>
-        <version>6.1-20250812133513-PH63856</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
   
   <dependencies>
     <!-- Compile against, but don't include JCICS in the final build (version and scope are from BOM) -->
@@ -79,7 +63,7 @@
   </dependencies>
 
   <build>
-    <finalName>cics-java-liberty-springboot-jms-app-${project.version}</finalName>
+    <finalName>cics-java-liberty-springboot-jms</finalName>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
@@ -89,4 +73,3 @@
   </build>
 
 </project>
-
