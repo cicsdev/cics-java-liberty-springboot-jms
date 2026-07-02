@@ -9,7 +9,7 @@ For further details about the development of this sample refer to the IBM develo
 
 ## Prerequisites
 
-- CICS TS V5.5 or later
+- CICS TS V6.1 or later
 - A configured Liberty JVM server
 - Java SE 17 or later on the workstation
 - An Eclipse development environment on the workstation (optional)
@@ -145,9 +145,12 @@ In addition it is advisable to set the `BackoutThreshold` attribute on the queue
 The value of 10 on `maxPoolSize` is used as an example only. Set `maxPoolSize` to the maximum number of concurrent users of the connection factory.
  
 - Deployment option 1:
-    - Copy and paste the built WAR from your *cics-java-liberty-springboot-jms-app/target* or *cics-java-liberty-springboot-jms-app/build/libs* directory into a Eclipse CICS bundle project and create a new WAR bundlepart that references the WAR file. Then deploy the CICS bundle project from CICS Explorer using the **Export Bundle Project to z/OS UNIX File System** wizard.
+    - Build the CICS bundle using `./gradlew clean build` or `./mvnw clean verify`. This generates a ZIP file in the `cics-java-liberty-springboot-jms-cicsbundle/build/distributions` or `cics-java-liberty-springboot-jms-cicsbundle/target` directory. Upload the ZIP to zFS and deploy it as a CICS bundle.
 
 - Deployment option 2:
+    - Copy and paste the built WAR from your *cics-java-liberty-springboot-jms-app/target* or *cics-java-liberty-springboot-jms-app/build/libs* directory into an Eclipse CICS bundle project and create a new WAR bundlepart that references the WAR file. Then deploy the CICS bundle project from CICS Explorer using the **Export Bundle Project to z/OS UNIX File System** wizard.
+
+- Deployment option 3:
     - Manually upload the WAR file to zFS and add an `<application>` element to the Liberty server.xml to define the web application with access to all authenticated users. For example the following application element can be used to install a WAR, and grant access to all authenticated users if security is enabled.
 
     ``` XML
