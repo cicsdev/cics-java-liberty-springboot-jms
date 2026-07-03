@@ -27,7 +27,7 @@
     <dependencies>
         <!-- Application WAR -->
         <dependency>
-            <groupId>com.ibm.cicsdev.springboot</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>cics-java-liberty-springboot-jms-app</artifactId>
             <version>${project.version}</version>
             <type>war</type>
