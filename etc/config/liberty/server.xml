@@ -6,10 +6,8 @@
         <feature>servlet-6.0</feature>
         <!-- Required for Spring @Async with CICS-enabled threads -->
         <feature>concurrent-3.0</feature>
-        <!-- JMS messaging support -->
-        <feature>messaging-3.1</feature>
-        <!-- IBM MQ JMS resource adapter -->
-        <feature>wmqJmsClient-2.0</feature>
+        <!-- IBM MQ Jakarta JMS client (requires MQ 9.3+ with Jakarta RAR) -->
+        <feature>wmqMessagingClient-3.0</feature>
         <!-- JNDI lookup for JMS connection factory -->
         <feature>jndi-1.0</feature>
     </featureManager>
@@ -25,8 +23,8 @@
         <connectionManager maxPoolSize="10" minPoolSize="0" />
     </jmsConnectionFactory>
 
-    <!-- MQ JMS resource adapter location -->
+    <!-- IBM MQ Jakarta JMS resource adapter location (MQ 9.4.4) -->
     <variable name="wmqJmsClient.rar.location"
-        value="/usr/lpp/mqm/V9R0M0/java/lib/jca/wmq.jmsra.rar" />
+        value="/usr/lpp/mqm/V9R4M4/java/lib/jca/wmq.jakarta.jmsra.rar" />
 
 </server>

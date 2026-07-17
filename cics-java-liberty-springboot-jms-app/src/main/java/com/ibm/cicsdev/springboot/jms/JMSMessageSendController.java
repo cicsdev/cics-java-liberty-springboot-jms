@@ -10,12 +10,12 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import org.springframework.web.bind.annotation.PathVariable;
 
 
 /**
@@ -57,8 +57,10 @@ public class JMSMessageSendController
      * @param jmsq, path variable for JMS queue name
      * @return, the JMS message to send to the MQ destination
      */
-    @RequestMapping("/send/{jmsq}")
-    public String send(@RequestParam(value = "data") String inputStr, @PathVariable String jmsq) 
+    @RequestMapping(value = "/send/{jmsq}", produces = MediaType.TEXT_PLAIN_VALUE)
+    public String send(
+    		@RequestParam("data") String inputStr,
+    		@PathVariable("jmsq") String jmsq)
     {       
         try 
         {
