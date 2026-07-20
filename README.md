@@ -36,8 +36,8 @@ Invoking the REST endpoint of the application will write a message with the data
 - Java SE 17 or later on the workstation
 - An Eclipse development environment on the workstation (optional)
 - Either Gradle or Apache Maven on the workstation (optional if using Wrappers)
-- IBM MQ V8.0 or later on z/OS
-- IBM MQ Resource Adapter for WebSphere Application Server Liberty, available from https://www.ibm.com/support/pages/node/489235
+- IBM MQ V9.3 or later on z/OS (V9.3+ required for the Jakarta JMS resource adapter)
+- IBM MQ Jakarta JMS Resource Adapter (`wmq.jakarta.jmsra.rar`), available from https://www.ibm.com/support/pages/obtaining-ibm-mq-resource-adapter-websphere-application-server-liberty-profile
 
 ## Reference
 
@@ -157,8 +157,7 @@ Ensure you have the following features defined in your Liberty `server.xml`:
 
 - `servlet-6.0` (required for Spring Boot 3.x and Jakarta EE 10)
 - `concurrent-3.0`
-- `messaging-3.1`
-- `wmqJmsClient-2.0`
+- `wmqMessagingClient-3.0` (IBM MQ Jakarta JMS client — requires MQ 9.3+ with the Jakarta RAR)
 - `jndi-1.0`
 
 Also add the JMS MQ Connection Factory configuration to `server.xml`. Substitute the *channel*, *hostname*, *port*, and *queueManager* values for your installation, and set the MQ RAR location to the path on zFS where you downloaded the resource adapter:
@@ -169,7 +168,7 @@ Also add the JMS MQ Connection Factory configuration to `server.xml`. Substitute
     queueManager="yourQueueManager" transportType="CLIENT"/>
     <connectionManager maxPoolSize="10" minPoolSize="0"/>
 </jmsConnectionFactory>
-<variable name="wmqJmsClient.rar.location" value="/wmq.jmsra-9.0.4.0.rar"/>
+<variable name="wmqJmsClient.rar.location" value="/usr/lpp/mqm/V9R4M4/java/lib/jca/wmq.jakarta.jmsra.rar"/>
 ```
 
 > **Note:** The value of `10` on `maxPoolSize` is an example only. Set it to the maximum number of concurrent users of the connection factory.
@@ -281,7 +280,7 @@ This project is licensed under [Eclipse Public License - v 2.0](LICENSE).
 - [CICS TS Documentation](https://www.ibm.com/docs/en/cics-ts)
 - [Spring Boot Java applications for CICS, Part 5: JMS](https://developer.ibm.com/tutorials/spring-boot-java-applications-for-cics-part-5-jms/)
 - [Spring Integration JMS Documentation](https://docs.spring.io/spring-integration/reference/jms.html)
-- [IBM MQ Resource Adapter download](https://www.ibm.com/support/pages/node/489235)
+- [IBM MQ Jakarta JMS Resource Adapter](https://www.ibm.com/support/pages/obtaining-ibm-mq-resource-adapter-websphere-application-server-liberty-profile)
 
 ## Contributing
 
