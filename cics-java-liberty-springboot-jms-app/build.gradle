@@ -1,6 +1,6 @@
 plugins
 {
-	id 'org.springframework.boot' version '3.5.9'
+	id 'org.springframework.boot' version '3.5.16'
 	id 'io.spring.dependency-management' version '1.1.7'
 	id 'java'
 	id 'eclipse'
@@ -25,7 +25,7 @@ java {
 // ============================================================================
 war
 {
-    archiveFileName = "cics-java-liberty-springboot-jms-app-${version}.war"
+    archiveFileName = 'cics-java-liberty-springboot-jms.war'
 }
 
 // Two versions of the WAR would be built, one for embedding into servers like Liberty (plain)
@@ -39,6 +39,17 @@ eclipse
     classpath
     {
         downloadJavadoc = true
+    }
+    wtp
+    {
+        facet
+        {
+            facet name: 'jst.web', version: '6.0'
+        }
+        component
+        {
+            contextPath = 'cics-java-liberty-springboot-jms'
+        }
     }
 }
 
@@ -56,9 +67,7 @@ dependencies
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 
 	// CICS TS V6.1 Maven BOM (as of Sept 2024)
-	def bom = "com.ibm.cics:com.ibm.cics.ts.bom:6.1-20250812133513-PH63856"
-
-    compileOnly enforcedPlatform(bom)
+	   compileOnly enforcedPlatform("com.ibm.cics:com.ibm.cics.ts.bom:${project.property('cics.bom.version')}")
     
     // Don't include JCICS components in the final build (no need for version because we have BOM)  
     compileOnly("com.ibm.cics:com.ibm.cics.server")

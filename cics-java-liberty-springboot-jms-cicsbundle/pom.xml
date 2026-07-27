@@ -8,7 +8,7 @@
     <!-- Parent Project                                                   -->
     <!-- ================================================================ -->
     <parent>
-        <groupId>com.ibm.cicsdev</groupId>
+        <groupId>com.ibm.cicsdev.springboot</groupId>
         <artifactId>cics-java-liberty-springboot-jms</artifactId>
         <version>1.0.0</version>
         <relativePath>../pom.xml</relativePath>
