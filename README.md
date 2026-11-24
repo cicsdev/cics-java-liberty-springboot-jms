@@ -1,6 +1,9 @@
 # cics-java-liberty-springboot-jms
-[![Build](https://github.com/cicsdev/cics-java-liberty-springboot-jms/actions/workflows/build.yaml/badge.svg)](https://github.com/cicsdev/cics-java-liberty-springboot-jms/actions/workflows/build.yaml)
+[![Build](https://github.com/cicsdev/cics-java-liberty-springboot-jms/actions/workflows/build.yaml/badge.svg?branch=springboot%2Fv4)](https://github.com/cicsdev/cics-java-liberty-springboot-jms/actions/workflows/build.yaml)
 [![License](https://img.shields.io/badge/License-EPL%202.0-green.svg)](https://www.eclipse.org/legal/epl-2.0/)
+
+> **Version note:** This branch targets Spring Boot 4.x (Jakarta EE 11, Java 21+).
+> For Spring Boot 3.x see the [springboot/v3](../../tree/springboot/v3) branch.
 
 ## Overview
 
@@ -31,9 +34,9 @@ Invoking the REST endpoint of the application will write a message with the data
 
 ## Prerequisites
 
-- CICS TS V6.1 or later (required for Spring Boot 3.x and Jakarta EE 10 support)
+- CICS TS V6.1 or later (required for Spring Boot 4.x and Jakarta EE 11 support)
 - A configured Liberty JVM server in CICS
-- Java SE 17 or later on the workstation
+- Java SE 21 or later on the workstation
 - An Eclipse development environment on the workstation (optional)
 - Either Gradle or Apache Maven on the workstation (optional if using Wrappers)
 - IBM MQ V9.3 or later on z/OS (V9.3+ required for the Jakarta JMS resource adapter)
@@ -49,9 +52,8 @@ For more information about the development of this sample, see [Spring Boot Java
 
 **If using the command line:**
 ```shell
-git clone https://github.com/cicsdev/cics-java-liberty-springboot-jms
+git clone -b springboot/v4 https://github.com/cicsdev/cics-java-liberty-springboot-jms
 ```
-Alternatively, download the sample as a [ZIP](https://github.com/cicsdev/cics-java-liberty-springboot-jms/archive/main.zip) and unzip onto the workstation.
 
 **If importing into Eclipse:**
 1. In the **Git Repositories** view, right-click the repository → **Import as Project** (imports the root project)
@@ -155,8 +157,8 @@ Before deploying, configure the following on your MQ queue manager:
 
 Ensure you have the following features defined in your Liberty `server.xml`:
 
-- `servlet-6.0` (required for Spring Boot 3.x and Jakarta EE 10)
-- `concurrent-3.0`
+- `servlet-6.1` (required for Spring Boot 4.x and Jakarta EE 11)
+- `concurrent-3.1` (required for Spring Boot 4.x and Jakarta EE 11; used by the Spring `DefaultManagedTaskExecutor` for the JMS listener threads)
 - `wmqMessagingClient-3.0` (IBM MQ Jakarta JMS client — requires MQ 9.3+ with the Jakarta RAR)
 - `jndi-1.0`
 
@@ -264,7 +266,7 @@ This repository includes a pre-configured Eclipse CICS bundle project `cics-java
 **Issue: Application fails to start**
 - Check Liberty messages.log for errors
 - Verify all required features are enabled in `server.xml` (see [CICS Liberty configuration](#cics-liberty-configuration))
-- Confirm CICS TS version supports Spring Boot 3.x (V6.1+)
+- Confirm CICS TS version supports Spring Boot 4.x (V6.1+)
 
 **Issue: Messages not appearing in TSQ**
 - Verify the MQ queue manager is accessible and `SPRING.QUEUE` exists and is defined as shareable

@@ -42,17 +42,20 @@
     </dependency>
 
     <!-- Spring Boot web support -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-
-    <!-- Don't include TomCat in the runtime build, but put it in lib-provided so it can run standalone as well as embedded -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-tomcat</artifactId>
-      <scope>provided</scope>
-    </dependency>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-webmvc</artifactId>
+        </dependency>
+    
+        <!-- Exclude only the Tomcat embedded container jars from the WAR — Liberty provides the servlet container.
+             In Spring Boot 4.x, spring-boot-starter-tomcat pulls in spring-boot-starter (and thus all core
+             Spring libraries) as a compile dependency, so using provided scope on the full starter would
+             incorrectly exclude spring-core, spring-context etc. from WEB-INF/lib. -->
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-tomcat-runtime</artifactId>
+          <scope>provided</scope>
+        </dependency>
     
     <!-- Jakarta EE JTA transaction management (provided) -->
     <dependency>
