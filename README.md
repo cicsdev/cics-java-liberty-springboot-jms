@@ -49,9 +49,8 @@ For more information about the development of this sample, see [Spring Boot Java
 
 **If using the command line:**
 ```shell
-git clone https://github.com/cicsdev/cics-java-liberty-springboot-jms
+git clone -b springboot/v3 https://github.com/cicsdev/cics-java-liberty-springboot-jms
 ```
-Alternatively, download the sample as a [ZIP](https://github.com/cicsdev/cics-java-liberty-springboot-jms/archive/main.zip) and unzip onto the workstation.
 
 **If importing into Eclipse:**
 1. In the **Git Repositories** view, right-click the repository → **Import as Project** (imports the root project)
